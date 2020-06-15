@@ -1,80 +1,110 @@
 #include "stdio.h"
 #include "cpp2c_encapsulation_defs_c.h"
 
-static Box largeBox;
 
-static void initGlobal(){
-    construct_box_d_d_d(&largeBox, 10, 20, 30);
+static Box _ZL8largeBox;
+unsigned char box99Flag = 0;
+unsigned char box88Flag = 0;
+
+
+
+static void _Z10initGlobalv(){
+    _ZNC3BoxEPKsddd(&_ZL8largeBox, 10, 20, 30);
 }
 
-Box box99;
-Box box88;
 
-
-void thisFunc()
+void Z8thisFuncv()
 {
-    static int flag = 1;
+    static Box box99;
+    if(box99Flag == 2){
+        _ZND3BoxEPKs(&box99);
+        return;
+    }
+
     printf("\n--- thisFunc() ---\n\n");
-    if(flag)
+    if(!box99Flag)
     {
-        construct_box_d_d_d(&box99, 99, 99, 99);
+        _ZNC3BoxEPKsddd(&box99, 99, 99, 99);
+        box99Flag = 1;
     }
-    mul_assign_d(&box99, 10);
-    flag = 0;
+
+    (&box99)->width *= 10;
+    (&box99)->height *= 10;
+    (&box99)->length *= 10;
 }
 
-void thatFunc()
+void Z8thatFuncv()
 {
-    static int flag = 1;
+    static Box box88;
+    if(box88Flag == 2){
+        _ZND3BoxEPKs(&box88);
+        return;
+    }
+
     printf("\n--- thatFunc() ---\n\n");
-    if(flag)
+    if(!box88Flag)
     {
-        construct_box_d_d_d(&box88, 88, 88, 88);
+        _ZNC3BoxEPKsddd(&box88, 99, 99, 99);
+        box88Flag = 1;
     }
-    mul_assign_d(&box88, 10);
-    flag = 0;
+
+    (&box88)->width *= 10;
+    (&box88)->height *= 10;
+    (&box88)->length *= 10;
 }
 
-void doBoxes()
+
+void _Z7doBoxesv()
 {
-    Box b1;
-    Box b2;
-    Box b3;
-    Box b4;
+    Box b1, b2, b3, b4, temp;
 
 
     printf("\n--- Start doBoxes() ---\n\n");
 
-    construct_box_d(&b1, 3);
-    construct_box_d_d_d(&b2, 4, 5, 6);
+    _ZNC3BoxEPKsd(&b1, 3);
+    _ZNC3BoxEPKsddd(&b2, 4, 5, 6);
 
-    printf("b1 volume: %f\n", (&b1)->width * (&b1)->length * (&b1)->height);
-    printf("b2 volume: %f\n", (&b2)->width * (&b2)->length * (&b2)->height);
+    printf("b1 volume: %f\n", b1.width * b1.length * b1.height);
+    printf("b2 volume: %f\n", b2.width * b2.length * b2.height);
 
-    mul_assign_d(&b1, 1.5);
-    mul_assign_d(&b2, 0.5);
+    (&b1)->width *= 1.5;
+    (&b1)->height *= 1.5;
+    (&b1)->length *= 1.5;
 
-    printf("b1 volume: %f\n", (&b1)->width * (&b1)->length * (&b1)->height);
-    printf("b2 volume: %f\n", (&b2)->width * (&b2)->length * (&b2)->height);
+    (&b2)->width *= 0.5;
+    (&b2)->height *= 0.5;
+    (&b2)->length *= 0.5;
 
-    b3 = b2;
-    b4 = mul_d_b(3, &b2);
-    printf("b3 %s b4\n", (&b3)->width == (&b4)->width && (&b3)->height == (&b4)->height && (&b3)->length == (&b4)->length ? "equals" : "does not equal");
+    printf("b1 volume: %f\n", b1.width * b1.length * b1.height);
+    printf("b2 volume: %f\n", b2.width * b2.length * b2.height);
 
-    mul_assign_d(&b3, 1.5);
-    mul_assign_d(&b4, 0.5);
-    printf("Now, b3 %s b4\n", !((&b3)->width == (&b4)->width && (&b3)->height == (&b4)->height && (&b3)->length == (&b4)->length) ? "equals" : "does not equal");
+    _ZN3Box10copyAssignEPKsKPK3Box(&b3, &b2);
+
+    _ZNC3BoxEPKsd(&temp, 3);
+    temp = _ZN3Box3mulEKPKsKPK3Box(&temp, &b2);
+    _ZNC3BoxEPKsKPK3Box(&b4, &temp);
+    _ZND3BoxEPKs(&temp);
+    printf("b3 %s b4\n", b3.width == b4.width && b3.height == b4.height && b3.length == b4.length ? "equals" : "does not equal");
+
+    (&b3)->width *= 1.5;
+    (&b3)->height *= 1.5;
+    (&b3)->length *= 1.5;
+
+    (&b4)->width *= 0.5;
+    (&b4)->height *= 0.5;
+    (&b4)->length *= 0.5;
+    printf("Now, b3 %s b4\n", b3.width == b4.width && b3.height == b4.height && b3.length == b4.length ? "equals" : "does not equal");
 
     printf("\n--- End doBoxes() ---\n\n");
 
-    destruct_box(&b1);
-    destruct_box(&b2);
-    destruct_box(&b3);
-    destruct_box(&b4);
+    _ZND3BoxEPKs(&b1);
+    _ZND3BoxEPKs(&b2);
+    _ZND3BoxEPKs(&b3);
+    _ZND3BoxEPKs(&b4);
 }
 
 
-void doShelves()
+void _Z9doShelvesv()
 {
     size_t i;
     Box aBox, temp1, temp2;
@@ -82,58 +112,67 @@ void doShelves()
 
     printf("\n--- start doShelves() ---\n\n");
 
-    construct_box_d(&aBox, 5);
+    _ZNC3BoxEPKsd(&aBox, 5);
 
-    for(i=0; i<NUM_BOXES; i++){
-        construct_box(&aShelf.boxes[i]);
+    for(i=0; i<_ZN5Shelf9NUM_BOXESE; i++){
+        _ZNC3BoxEPKs(&aShelf.boxes[i]);
     }
 
-    print_s(&aShelf);
-    setBox(&aShelf, 1, &largeBox);
-    setBox(&aShelf, 0, &aBox);
+    _ZNK5Shelf5printEKPKs(&aShelf);
+    _ZN5Shelf6setBoxEPKsiKPK3Box(&aShelf, 1, &_ZL8largeBox);
+    _ZN5Shelf6setBoxEPKsiKPK3Box(&aShelf, 0, &aBox);
 
-    print_s(&aShelf);
-    message = "This is the total volume on the shelf:";
-    print_s(&aShelf);
-    message = "Shelf's volume:";
-    print_s(&aShelf);
+    _ZNK5Shelf5printEKPKs(&aShelf);
+    _ZN5Shelf7messageE = "This is the total volume on the shelf:";
+    _ZNK5Shelf5printEKPKs(&aShelf);
+    _ZN5Shelf7messageE = "Shelf's volume:";
+    _ZNK5Shelf5printEKPKs(&aShelf);
 
-    construct_box_d_d_d(&temp1, 2, 4, 6);
-    setBox(&aShelf, 1, &temp1);
-    destruct_box(&temp1);
+    _ZNC3BoxEPKsddd(&temp1, 2, 4, 6);
+    _ZN5Shelf6setBoxEPKsiKPK3Box(&aShelf, 1, &temp1);
+    _ZND3BoxEPKs(&temp1);
 
-    construct_box_d(&temp2, 2);
-    setBox(&aShelf, 2, &temp2);
-    destruct_box(&temp2);
+    _ZNC3BoxEPKsd(&temp2, 2);
+    _ZN5Shelf6setBoxEPKsiKPK3Box(&aShelf, 2, &temp2);
+    _ZND3BoxEPKs(&temp2);
 
-    print_s(&aShelf);
+    _ZNK5Shelf5printEKPKs(&aShelf);
 
     printf("\n--- end doShelves() ---\n\n");
 
-    destruct_box(&aBox);
-    destruct_shelf(&aShelf);
+    _ZND3BoxEPKs(&aBox);
+    _ZND5ShelfEPKs(&aShelf);
 }
 
 int main()
 {
-    initGlobal();
+    _Z10initGlobalv();
     printf("\n--- Start main() ---\n\n");
 
-    doBoxes();
+    _Z7doBoxesv();
 
-    thisFunc();
-    thisFunc();
-    thisFunc();
-    thatFunc();
-    thatFunc();
+    Z8thisFuncv();
+    Z8thisFuncv();
+    Z8thisFuncv();
+    Z8thatFuncv();
+    Z8thatFuncv();
 
-    doShelves();
+    _Z9doShelvesv();
 
 
     printf("\n--- End main() ---\n\n");
-    destruct_box(&box99);
-    destruct_box(&box88);
 
+    if(box99Flag){
+        box99Flag++;
+        Z8thisFuncv();
+    }
+
+    if(box88Flag){
+        box88Flag++;
+        Z8thatFuncv();
+    }
+
+    _ZND3BoxEPKs(&_ZL8largeBox);
 
     return 0;
 }

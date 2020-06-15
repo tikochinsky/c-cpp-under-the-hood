@@ -14,86 +14,34 @@ struct _Box{
 typedef struct _Box Box;
 
 
-void construct_box(Box* const box);
-void construct_box_d(Box* const box, double dim);
-void construct_box_d_d_d(Box* const box, double l, double w, double h);
-void destruct_box(Box* const box);
-Box* mul_assign_d(Box* const box, double mult);
-void print_b(const Box* const box);
+void _ZNC3BoxEPKs(Box* const box);
+void _ZNC3BoxEPKsd(Box* const box, double dim);
+void _ZNC3BoxEPKsddd(Box* const box, double l, double w, double h);
+void _ZNC3BoxEPKsKPK3Box(Box* const box1, const Box* const box2);
+void _ZN3Box10copyAssignEPKsKPK3Box(Box* const box1, const Box* const box2);
+void _ZND3BoxEPKs(Box* const box);
+void _ZNK3Box5printEKPKs(const Box* const box);
 
 
 /* Box Defs */
 
-Box mul_b_d(const Box* const box, double mult);
-Box mul_d_b(double mult, const Box* const box);
-
-/*
-bool isEqual(const Box* const lhs, const Box* const rhs)
-{
-    return lhs->width == rhs->width && lhs->height == rhs->height && lhs->length == rhs->length;
-}
-
-
-bool isNotEqual(const Box* const lhs, const Box* const rhs)
-{
-    return !isEqual(lhs, rhs);
-}*/
-
-
+Box _ZN3Box3mulEKPKsKPK3Box(const Box* const box1, const Box* const box2);
 
 
 /* Shelf */
-#define NUM_BOXES 3
-const char* message;
-
+#define _ZN5Shelf9NUM_BOXESE 3
+extern const char *_ZN5Shelf7messageE;
 
 struct _Shelf{
-    Box boxes[NUM_BOXES];
+    Box boxes[_ZN5Shelf9NUM_BOXESE];
 };
 
 typedef struct _Shelf Shelf;
 
-void destruct_shelf(Shelf *const shelf);
-void setBox(Shelf *const shelf, int index, const Box* const dims);
-double getVolume_s(const Shelf* const shelf);
-void print_s(const Shelf* const shelf);
+void _ZND5ShelfEPKs(Shelf *const shelf);
+void _ZN5Shelf6setBoxEPKsiKPK3Box(Shelf *const shelf, int index, const Box* const dims);
+double _ZNK5Shelf9getVolumeEPKsiKPK3Box(const Shelf* const shelf);
+void _ZNK5Shelf5printEKPKs(const Shelf* const shelf);
 
-
-/* Shelf Defs */
-/*
-Box* const getBox(const Shelf* const shelf, int index)
-{
-    return &(shelf->boxes[index]);
-}
-
-int getNumBoxes()
-{
-    return NUM_BOXES;
-}
-
-void setMessage(const char* msg)
-{
-    message = msg;
-}*/
-
-/*
-//class Shelf
-//{
-//public:
-//    void setBox(int index, const Box& dims);
-//    double getVolume() const;
-//    Box& getBox(int index);
-//    void print() const;
-//
-//    static int getNumBoxes();
-//    static void setMessage(const char* msg);
-//
-//private:
-//    static const unsigned int NUM_BOXES = 3;
-//    static const char* const DEF_MSG;
-//    static const char* message;
-//
-//    Box boxes[NUM_BOXES];
-//};*/
 
 #endif

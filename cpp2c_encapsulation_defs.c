@@ -65,6 +65,8 @@ Box _ZN3Box3mulEKPKsKPK3Box(const Box* const box1, const Box* const box2)
 const char* _ZN5Shelf7messageE = _ZN5Shelf7DEF_MSGE;
 
 
+void _ZNC5ShelfEPKs(Shelf *const shelf){}
+
 void _ZND5ShelfEPKs(Shelf *const shelf) {
     size_t i;
     for (i = 0; i < _ZN5Shelf9NUM_BOXESE ; ++i){

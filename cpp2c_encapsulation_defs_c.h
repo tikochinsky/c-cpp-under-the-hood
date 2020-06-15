@@ -38,6 +38,7 @@ struct _Shelf{
 
 typedef struct _Shelf Shelf;
 
+void _ZNC5ShelfEPKs(Shelf *const shelf);
 void _ZND5ShelfEPKs(Shelf *const shelf);
 void _ZN5Shelf6setBoxEPKsiKPK3Box(Shelf *const shelf, int index, const Box* const dims);
 double _ZNK5Shelf9getVolumeEPKsiKPK3Box(const Shelf* const shelf);

@@ -1,12 +1,10 @@
 #include "stdio.h"
 #include "cpp2c_encapsulation_defs_c.h"
-extern struct Box;
-
 
 static Box largeBox;
 
-static initGlobal(){
-    construct_box(&largeBox, 10, 20, 30);
+static void initGlobal(){
+    construct_box_d_d_d(&largeBox, 10, 20, 30);
 }
 
 Box box99;
@@ -19,10 +17,10 @@ void thisFunc()
     printf("\n--- thisFunc() ---\n\n");
     if(flag)
     {
-        construct_box(&box99, 99, 99, 99);
+        construct_box_d_d_d(&box99, 99, 99, 99);
     }
-    box99 *= 10;
-    flag = 0
+    mul_assign_d(&box99, 10);
+    flag = 0;
 }
 
 void thatFunc()
@@ -31,9 +29,9 @@ void thatFunc()
     printf("\n--- thatFunc() ---\n\n");
     if(flag)
     {
-        construct_box(&box88, 88, 88, 88);
+        construct_box_d_d_d(&box88, 88, 88, 88);
     }
-    box88 *= 10;
+    mul_assign_d(&box88, 10);
     flag = 0;
 }
 
@@ -50,33 +48,35 @@ void doBoxes()
     construct_box_d(&b1, 3);
     construct_box_d_d_d(&b2, 4, 5, 6);
 
-    printf("b1 volume: %f\n", b1->width * b1->length * b1->height);
-    printf("b2 volume: %f\n", b2->width * b2->length * b2->height);
+    printf("b1 volume: %f\n", (&b1)->width * (&b1)->length * (&b1)->height);
+    printf("b2 volume: %f\n", (&b2)->width * (&b2)->length * (&b2)->height);
 
     mul_assign_d(&b1, 1.5);
     mul_assign_d(&b2, 0.5);
 
-    printf("b1 volume: %f\n", b2->width * b2->length * b2->height);
-    printf("b2 volume: %f\n", b2->width * b2->length * b2->height);
+    printf("b1 volume: %f\n", (&b1)->width * (&b1)->length * (&b1)->height);
+    printf("b2 volume: %f\n", (&b2)->width * (&b2)->length * (&b2)->height);
 
     b3 = b2;
-    b4 = 3 * b2;
-    printf("b3 %s b4\n", isEqual(&b3, &b4) ? "equals" : "does not equal");
+    b4 = mul_d_b(3, &b2);
+    printf("b3 %s b4\n", (&b3)->width == (&b4)->width && (&b3)->height == (&b4)->height && (&b3)->length == (&b4)->length ? "equals" : "does not equal");
 
     mul_assign_d(&b3, 1.5);
     mul_assign_d(&b4, 0.5);
-    printf("Now, b3 %s b4\n", isEqual(&b3, &b4) ? "equals" : "does not equal");
+    printf("Now, b3 %s b4\n", !((&b3)->width == (&b4)->width && (&b3)->height == (&b4)->height && (&b3)->length == (&b4)->length) ? "equals" : "does not equal");
+
+    printf("\n--- End doBoxes() ---\n\n");
 
     destruct_box(&b1);
     destruct_box(&b2);
     destruct_box(&b3);
     destruct_box(&b4);
-    printf("\n--- End doBoxes() ---\n\n");
 }
 
 
 void doShelves()
 {
+    size_t i;
     Box aBox, temp1, temp2;
     Shelf aShelf;
 
@@ -84,32 +84,40 @@ void doShelves()
 
     construct_box_d(&aBox, 5);
 
+    for(i=0; i<NUM_BOXES; i++){
+        construct_box(&aShelf.boxes[i]);
+    }
+
     print_s(&aShelf);
     setBox(&aShelf, 1, &largeBox);
     setBox(&aShelf, 0, &aBox);
 
     print_s(&aShelf);
-    setMessage("This is the total volume on the shelf:");
+    message = "This is the total volume on the shelf:";
     print_s(&aShelf);
-    setMessage("Shelf's volume:");
+    message = "Shelf's volume:";
     print_s(&aShelf);
-
 
     construct_box_d_d_d(&temp1, 2, 4, 6);
     setBox(&aShelf, 1, &temp1);
+    destruct_box(&temp1);
 
     construct_box_d(&temp2, 2);
     setBox(&aShelf, 2, &temp2);
+    destruct_box(&temp2);
+
     print_s(&aShelf);
 
-    destruct_shelf(&aShelf);
     printf("\n--- end doShelves() ---\n\n");
+
+    destruct_box(&aBox);
+    destruct_shelf(&aShelf);
 }
 
 int main()
 {
     initGlobal();
-    std::printf("\n--- Start main() ---\n\n");
+    printf("\n--- Start main() ---\n\n");
 
     doBoxes();
 
@@ -122,10 +130,10 @@ int main()
     doShelves();
 
 
+    printf("\n--- End main() ---\n\n");
     destruct_box(&box99);
     destruct_box(&box88);
 
-    std::printf("\n--- End main() ---\n\n");
 
     return 0;
 }

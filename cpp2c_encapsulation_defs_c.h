@@ -1,9 +1,10 @@
-#ifndef UTH_CPP2C_ENCAPSULATION_DEFS_C_H
-#define UTH_CPP2C_ENCAPSULATION_DEFS_C_H
+#ifndef _UTH_H_
+#define _UTH_H_
 
 #include "stdbool.h"
 
 /* Box */
+
 struct _Box{
     double length;
     double width;
@@ -12,63 +13,31 @@ struct _Box{
 
 typedef struct _Box Box;
 
-void construct_box(const Box *box);
-void construct_box_d(const Box *box, double dim);
-void construct_box_d_d_d(const Box *box, double l, double w, double h);
-void destruct_box(const Box *box);
-Box* mul_assign_d(const Box *box, double mult);
-void print_b( Box const *box);
+
+void construct_box(Box* const box);
+void construct_box_d(Box* const box, double dim);
+void construct_box_d_d_d(Box* const box, double l, double w, double h);
+void destruct_box(Box* const box);
+Box* mul_assign_d(Box* const box, double mult);
+void print_b(const Box* const box);
 
 
 /* Box Defs */
-double getWidth(Box const* box)
-{
-    return box->width;
-}
 
+Box mul_b_d(const Box* const box, double mult);
+Box mul_d_b(double mult, const Box* const box);
 
-double getLength(Box const* box)
-{
-    return box->length;
-}
-
-
-double getHeight(Box const* box)
-{
-    return box->height;
-}
-
-
-double getVolume_b(Box const* box)
-{
-    return box->width * box->length * box->height;
-}
-
-
-Box mul_b_d(Box const* box, double mult)
-{
-    Box ret = *box;
-    mul_assign_d(&ret, mult);
-    return ret;
-}
-
-
-Box mul_d_b(double mult, Box const* box)
-{
-    return mul_b_d(box, mult);
-}
-
-
-bool isEqual(const Box* lhs, const Box* rhs)
+/*
+bool isEqual(const Box* const lhs, const Box* const rhs)
 {
     return lhs->width == rhs->width && lhs->height == rhs->height && lhs->length == rhs->length;
 }
 
 
-bool isNotEqual(const Box* lhs, const Box* rhs)
+bool isNotEqual(const Box* const lhs, const Box* const rhs)
 {
     return !isEqual(lhs, rhs);
-}
+}*/
 
 
 
@@ -77,23 +46,24 @@ bool isNotEqual(const Box* lhs, const Box* rhs)
 #define NUM_BOXES 3
 const char* message;
 
+
 struct _Shelf{
     Box boxes[NUM_BOXES];
 };
 
 typedef struct _Shelf Shelf;
 
-void destruct_shelf(const Shelf *shelf);
-void setBox(Shelf const *shelf, int index, const Box* dims);
-double getVolume_s(Shelf const *shelf);
-void print_s(Shelf const *shelf);
+void destruct_shelf(Shelf *const shelf);
+void setBox(Shelf *const shelf, int index, const Box* const dims);
+double getVolume_s(const Shelf* const shelf);
+void print_s(const Shelf* const shelf);
 
 
 /* Shelf Defs */
-
-Box const* getBox(const Shelf *shelf, int index)
+/*
+Box* const getBox(const Shelf* const shelf, int index)
 {
-    return (shelf->boxes)[index];
+    return &(shelf->boxes[index]);
 }
 
 int getNumBoxes()
@@ -104,7 +74,7 @@ int getNumBoxes()
 void setMessage(const char* msg)
 {
     message = msg;
-}
+}*/
 
 /*
 //class Shelf
@@ -126,4 +96,4 @@ void setMessage(const char* msg)
 //    Box boxes[NUM_BOXES];
 //};*/
 
-#endif //UTH_CPP2C_ENCAPSULATION_DEFS_C_H
+#endif

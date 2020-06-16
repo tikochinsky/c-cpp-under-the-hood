@@ -1,13 +1,6 @@
 #include "stdio.h"
 #include "cpp2c_encapsulation_defs_c.h"
 
-void _ZNC3BoxEPKs(Box * const box){
-    box->length = 1;
-    box->width = 1;
-    box->height = 1;
-    _ZNK3Box5printEKPKs(box);
-}
-
 
 void _ZNC3BoxEPKsd(Box* const box, double dim){
     box->length = dim;

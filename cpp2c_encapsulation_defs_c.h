@@ -14,7 +14,6 @@ struct _Box{
 typedef struct _Box Box;
 
 
-void _ZNC3BoxEPKs(Box* const box);
 void _ZNC3BoxEPKsd(Box* const box, double dim);
 void _ZNC3BoxEPKsddd(Box* const box, double l, double w, double h);
 void _ZNC3BoxEPKsKPK3Box(Box* const box1, const Box* const box2);

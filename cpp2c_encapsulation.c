@@ -115,7 +115,7 @@ void _Z9doShelvesv()
     _ZNC3BoxEPKsd(&aBox, 5);
 
     for(i=0; i<_ZN5Shelf9NUM_BOXESE; i++){
-        _ZNC3BoxEPKs(&aShelf.boxes[i]);
+        _ZNC3BoxEPKsd(&aShelf.boxes[i], 1);
     }
     _ZNC5ShelfEPKs(&aShelf);
 

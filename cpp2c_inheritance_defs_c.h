@@ -1,32 +1,45 @@
 #ifndef __CPP2C_INHERITANCE_DEFS_H__
 #define __CPP2C_INHERITANCE_DEFS_H__
 
-#include <cstdio>
+#include "stdio.h"
 #include "cpp2c_encapsulation_defs_c.h"
 
-//// Materials ////////////
+/*/// Materials ///////////*/
+
+/*Materials*/
+enum Types
+{
+    PLASTIC,
+    METAL,
+    WOOD,
+    PAPER,
+    OTHER
+};
 
 struct _Materials
 {
-    enum Types
-    {
-        PLASTIC,
-        METAL,
-        WOOD,
-        PAPER,
-        OTHER
-    };
+    char c;
 };
 
 typedef struct _Materials Materials;
 
-void _ZNC9MaterialsEPKs(Materials* const materials);
-void _ZNC9MaterialsEPKsKPK9Materials(Materials* const materials, const Materials* const otherMaterials);
-void _ZN9Materials10copyAssignEPKsKPK9Materials(Materials* const materials, const Materials* const otherMaterials);
-void _ZND9MaterialsEPKs(Materials* const materials){}
+
+void _ZNC9MaterialsEPKs(Materials* const materials);/*default ctor*/
+void _ZNC9MaterialsEPKsKPK9Materials(Materials* const materials, const Materials* const otherMaterials);/*copy ctor*/
+const Materials* const _ZN9Materials10copyAssignEPKsKPK9Materials(Materials* const materials, const Materials* const otherMaterials);/*copy assignment*/
+void _ZND9MaterialsEPKs(Materials* const materials);/*default dtor*/
+
+/*
+materials inlines:
+ const char* getName(enum Types type)
+{
+    const char* const names[] = { "Plastic", "Metal", "Wood", "Paper", "Other" };
+    return names[type];
+}
 
 
-/*inheruts from materials*/
+
+/*Material_t*/
 struct _Material_t
 {
     Materials _materialsBase;
@@ -35,38 +48,42 @@ struct _Material_t
 
 typedef struct _Material_t Material_t;
 
-_ZND10Material_tEPKs(Material_t *const material);
-/*inlines*/
-/*
---materials:
- const char* getName(enum Types type)
-{
-    const char* const names[] = { "Plastic", "Metal", "Wood", "Paper", "Other" };
-    return names[type];
-}
 
---material_t:
+/*default ctor is inline*/
+void _ZNC10Material_tEPKsKPK10Material_t(Material_t* const material_t, const Material_t* const otherMaterial_t);/*copy ctor*/
+void _ZND10Material_tEPKs(Material_t *const material_t);
+
+
+/*const Material_t* const _ZN10Material_t10copyAssignEPKsKPK10Material_t(Material_t* const material_t, const Material_t* const otherMaterial_t);copy assignment*/
+/*
+material_t inlines:
 Material_t(Types mat = OTHER): material(mat) { printf("Material created, set to %s\n", name()); }
 const char* name() const { return getName(material); }
 
  */
 
-//// PhysicalBox ////////////
+
+
+/* PhysicalBox */
+
 struct _PhysicalBox{
-    Box _boxBase;
-    Material_t material;
+    Box m_boxBase;
+    Material_t m_material;
 };
 
 typedef struct _PhysicalBox PhysicalBox;
 
-_ZNC11PhysicalBoxEPKsddde5Types(PhysicalBox *const pBox, double l, double w, double h, enum Types t);
-_ZNC11PhysicalBoxEPKse5Types(PhysicalBox *const pBox, enum Types t);
-_ZND11PhysicalBoxEPKs(PhysicalBox *const pBox);
 
-void _ZN11PhysicalBox6printpEKPKs(const PhysicalBox *const pBox);
+void _ZNC11PhysicalBoxEPKsddde5Types(PhysicalBox *const pBox, double l, double w, double h, enum Types t);/*ctor ddd, default OTHER*/
+void _ZNC11PhysicalBoxEPKse5Types(PhysicalBox *const pBox, enum Types t);/*ctor default box*/
+void _ZNC11PhysicalBoxEPKsKPK11PhysicalBox(PhysicalBox *const pBox, const PhysicalBox *const otherPBox);/*copy ctor*/
+const PhysicalBox *const _ZN11PhysicalBox10copyAssignEPKsKPK11PhysicalBox(PhysicalBox *const pBox, const PhysicalBox *const otherPBox);/*copy assignment*/
+void _ZND11PhysicalBoxEPKs(PhysicalBox *const pBox);/*dtor*/
 
-/*inlines
-//// PhysicalBox Defs ////////////
+void _ZN11PhysicalBox6printpEKPKs(const PhysicalBox *const pBox);/*printp*/
+
+
+/* PhysicalBox inlines:
 
 inline Materials::Types PhysicalBox::getMaterial() const
 {
@@ -84,28 +101,26 @@ inline bool operator!=(const PhysicalBox& lhs, const PhysicalBox& rhs)
 }
 */
 
-//// WeightBox ////////////
 
-class WeightBox: public Box
-{
-public:
-    WeightBox(double l, double w, double h, double wgt = 0.0);
-    WeightBox(const WeightBox& other);
-    ~WeightBox();
 
-    WeightBox& operator=(const WeightBox& other);
-
-    double getWeight() const;
-    void printw() const;
-
-private:
-    double weight;
+/* WeightBox */
+struct WeightBox{
+    Box m_boxBase;
+    double m_weight;
 };
 
-bool operator==(const WeightBox&, const WeightBox&);
-bool operator!=(const WeightBox&, const WeightBox&);
+typedef struct WeightBox WeightBox;
 
-//// WeightBox Defs ////////////
+
+void _ZNC9WeightBoxEPKsdddd(WeightBox *const weightBox, double l, double w, double h, double wgt);/*ctor - default wgt 0.0*/
+void _ZNC9WeightBoxEPKsKPK9WeightBox(WeightBox *const weightBox, const WeightBox *const otherWeightBox);/*copy ctor*/
+void _ZND9WeightBoxEPKs(WeightBox *const weightBox);/*dtor*/
+WeightBox* _ZN9WeightBox10copyAssignEPKsKPK9WeightBox(WeightBox *const weightBox, const WeightBox *const otherWeightBox);/*copy assign*/
+
+void _ZN9WeightBox6printwEKPKs(const WeightBox *const weightBox);/*printw*/
+
+
+/*WeightBox Defs inlines
 
 inline double WeightBox::getWeight() const
 {
@@ -122,8 +137,8 @@ inline bool operator!=(const WeightBox& lhs, const WeightBox& rhs)
     return !(lhs == rhs);
 }
 
+*/
 
-
-#endif // __CPP2C_INHERITANCE_DEFS_H__
+#endif
 
 

@@ -5,69 +5,82 @@
 
 void doPrePostFixer()
 {
+    PrePostFixer angleBrackets;
     printf("\n--- start doPrePostFixer() ---\n\n");
 
-    PrePostFixer angleBrackets("<<< ", " >>>");
-    angleBrackets.print("Hello World!");
-    angleBrackets.print(-777);
-    angleBrackets.print(350, '#');
-    angleBrackets.print(static_cast<long int>(3.14));
+    PrePostFixer_ctor(&angleBrackets, "<<< ", " >>>", PrePostFixerVTable);
+    PrePostFixer_print_cc(&angleBrackets,"Hello World!");
+    PrePostFixer_print_l_c(&angleBrackets, -777, '\0');
+    PrePostFixer_print_l_c(&angleBrackets, 350, '#');
+    PrePostFixer_print_l_c(&angleBrackets, 3, '\0');
 
     printf("\n--- end doPrePostFixer() ---\n\n");
+    PrePostFixer_dtor(&angleBrackets);
 }
 
 void doPrePostDollarFixer()
 {
+    PrePostDollarFixer asterisks;
     printf("\n--- start doPrePostDollarFixer() ---\n\n");
 
-    PrePostDollarFixer asterisks("***** ", " *****");
-    asterisks.print(-777);
-    asterisks.print(350, '#');
-    asterisks.print(3.14f);
+    PrePostDollarFixer_ctor_cc_cc(&asterisks, "***** ", " *****", PrePostDollarFixerVTable);
+    PrePostDollarFixer_print_i_c(&asterisks, -777, PrePostDollarFixer_DEFAULT_SYMBOL);
+    PrePostDollarFixer_print_i_c(&asterisks, 350, '#');
+    PrePostDollarFixer_print_d_c(&asterisks, 3.14f, PrePostDollarFixer_DEFAULT_SYMBOL);
 
     printf("\n--- end doPrePostDollarFixer() ---\n\n");
+    PrePostDollarFixer_dtor(&asterisks);
 }
 
 void doPrePostChecker()
 {
+    PrePostChecker check;
     printf("\n--- start doPrePostChecker() ---\n\n");
 
-    PrePostChecker check;
-    check.printThisSymbolUsingFunc();
-    check.printThisSymbolDirectly();
-    check.printDollarSymbolByCastDirectly();
-    check.printDollarSymbolByScopeDirectly();
-    check.printDollarSymbolByCastUsingFunc();
-    check.printDollarSymbolByScopeUsingFunc();
+    PrePostChecker_ctor(&check, PrePostCheckerVTable);
+
+    PrePostChecker_printThisSymbolUsingFunc(&check);
+    PrePostChecker_printThisSymbolDirectly(&check);
+    PrePostChecker_printDollarSymbolByCastDirectly(&check);
+    PrePostChecker_printDollarSymbolByScopeDirectly(&check);
+    PrePostChecker_printDollarSymbolByCastUsingFunc(&check);
+    PrePostChecker_printDollarSymbolByScopeUsingFunc(&check);
 
     printf("\n--- end doPrePostChecker() ---\n\n");
+    PrePostChecker_dtor(&check);
 }
 
 void doPrePostFloatDollarFixer()
 {
-    printf("\n--- start doPrePostFloatDollarFixer() ---\n\n");
-
-    PrePostFloatDollarFixer hashes("### ", " ###");
-    hashes.print(-777);
-    hashes.print(350, '#');
-    hashes.print(3.14f);
-
-    PrePostDollarFixer hashes2(hashes);
-    hashes2.print(7.5);
-    hashes2.print(100);
+    PrePostFloatDollarFixer hashes;
+    PrePostDollarFixer hashes2;
 
     printf("\n--- start doPrePostFloatDollarFixer() ---\n\n");
+
+    PrePostFloatDollarFixer_ctor(&hashes, "### ", " ###", PrePostFloatDollarFixerVTable);
+    PrePostFloatDollarFixer_print_f(&hashes, -777);
+    PrePostFloatDollarFixer_print_f_c(&hashes, 350, '#');
+    PrePostFloatDollarFixer_print_f(&hashes, 3.14f);
+
+
+    PrePostDollarFixer_copy_ctor(&hashes2, (PrePostDollarFixer*)(&hashes), PrePostDollarFixerVTable);
+    PrePostDollarFixer_print_d_c(&hashes2, 7.5, PrePostDollarFixer_DEFAULT_SYMBOL);
+    PrePostDollarFixer_print_i_c(&hashes2, 100, PrePostDollarFixer_DEFAULT_SYMBOL);
+
+    printf("\n--- start doPrePostFloatDollarFixer() ---\n\n");
+    PrePostFloatDollarFixer_dtor(&hashes);
+    PrePostDollarFixer_dtor(&hashes2);
 }
 
-void runAsPrePostFixerRef(const PrePostFixer& pp)
+void runAsPrePostFixerRef(const PrePostFixer* const pp)
 {
     printf("\n--- start runAsPrePostFixerRef() ---\n\n");
 
-    pp.print(123);
+    ((funcPtr_pvoid_long_char)((((TextFormatter*)pp)->m_vptr)[_Z5printElc]))(pp, 123, '\0');
 
     printf("\n--- end runAsPrePostFixerRef() ---\n\n");
 }
-
+/*
 void runAsPrePostDollarFixerRef(const PrePostDollarFixer& pp)
 {
     printf("\n--- start runAsPrePostDollarFixerRef() ---\n\n");
@@ -162,9 +175,11 @@ void doFormatterDynamicArray()
 
     printf("\n--- start doFormatterDynamicArray() ---\n\n");
 }
+ */
 
 int main()
 {
+    PrePostHashFixer hfix;
     printf("\n--- Start main() ---\n\n");
 
     doPrePostFixer();
@@ -172,9 +187,9 @@ int main()
     doPrePostFloatDollarFixer();
     doPrePostChecker();
 
-    PrePostHashFixer hfix;
-    runAsPrePostFixerRef(hfix);
-    runAsPrePostDollarFixerRef(hfix);
+    PrePostHashFixer_ctor(&hfix, 4, PrePostHashFixerVTable);
+    runAsPrePostFixerRef((PrePostFixer*)&hfix);
+   /* runAsPrePostDollarFixerRef(hfix);
     runAsPrePostDollarFixerObj(hfix);
     runAsPrePostHashFixerRef(hfix);
 
@@ -182,10 +197,10 @@ int main()
 
     doFormatterArray();
     doFormatterPtrs();
-    doFormatterDynamicArray();
+    doFormatterDynamicArray();*/
 
     printf("\n--- End main() ---\n\n");
-
+    PrePostHashFixer_dtor(&hfix);
     return 0;
 }
 

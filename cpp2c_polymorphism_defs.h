@@ -10,6 +10,14 @@ inline void printFunc(const char* fname)
     printf("%-60s | ", fname);
 }*/
 
+typedef void(*void_func_ptr)(void);
+typedef void(*void_long_char_func_ptr)(const void *const, long, char);
+
+/*vTables*/
+extern void(*TextFormatterVTable[2])(void) ;
+extern void(*DefaultTextFormatterVTable[2])(void) ;
+extern void(*PrePostFixerVTable[4])(void) ;
+extern void(*PrePostDollarFixerVTable[4])(void) ;
 
 enum Functions{
     _Z4DtorEPKs,
@@ -21,7 +29,7 @@ enum Functions{
 
 /* 1---TextFormatter--- */
 typedef struct _TextFormatter{
-    void(**m_vptr)(void);
+    void_func_ptr* m_vptr;
 }TextFormatter;
 
 
@@ -36,8 +44,8 @@ typedef struct DefaultTextFormatter{
     int m_id;
 }DefaultTextFormatter;
 
-void DefaultTextFormatter_ctor(DefaultTextFormatter *const this, void(**vTable)(void));/*defualt: DefaultTextFormatterVTable*/
-void DefaultTextFormatter_copy_ctor(DefaultTextFormatter *const this, const DefaultTextFormatter *const other, void(**vTable)(void));/*defualt: DefaultTextFormatterVTable*/
+void DefaultTextFormatter_ctor(DefaultTextFormatter *const this, void_func_ptr* vTable);/*defualt: DefaultTextFormatterVTable*/
+void DefaultTextFormatter_copy_ctor(DefaultTextFormatter *const this, const DefaultTextFormatter *const other, void_func_ptr* vTable);/*defualt: DefaultTextFormatterVTable*/
 DefaultTextFormatter* const DefaultTextFormatter_copy_assign(DefaultTextFormatter *const this, const DefaultTextFormatter *const other);
 void DefaultTextFormatter_dtor(DefaultTextFormatter *const this);
 void DefaultTextFormatter_print(const DefaultTextFormatter *const this, const char* text);
@@ -64,11 +72,11 @@ typedef struct _PrePostFixer{
 }PrePostFixer;
 
 
-void PrePostFixer_ctor(PrePostFixer *const this, const char* prefix, const char* postfix, void(**vTable)(void));/*defualt: PrePostFixerVTable*/
-/*I declared:*/void PrePostFixer_copy_ctor(PrePostFixer *const this, const PrePostFixer *const other, void(**vTable)(void));/*defualt: PrePostFixerVTable*/
+void PrePostFixer_ctor(PrePostFixer *const this, const char* prefix, const char* postfix, void_func_ptr* vTable);/*defualt: PrePostFixerVTable*/
+/*I declared:*/void PrePostFixer_copy_ctor(PrePostFixer *const this, const PrePostFixer *const other, void_func_ptr* vTable);/*defualt: PrePostFixerVTable*/
 void PrePostFixer_dtor(PrePostFixer *const this);
 
-void PrePostFixer_print_cc(const PrePostFixer *const this, const char* text);
+void PrePostFixer_print_cc(const void *const this, const char* text);
 void PrePostFixer_print_l_c(const PrePostFixer *const this, long num, char symbol);/*default '\0'*/
 
 char PrePostFixer_getDefaultSymbol(const PrePostFixer *const this);
@@ -105,8 +113,8 @@ typedef struct _PrePostDollarFixer{
 
 extern const char PrePostDollarFixer_DEFAULT_SYMBOL;
 
-void PrePostDollarFixer_ctor_cc_cc(PrePostDollarFixer *const this, const char* prefix, const char* postfix, void(**vTable)(void));/*defualt: PrePostDollarFixer*/
-void PrePostDollarFixer_copy_ctor(PrePostDollarFixer *const this, const PrePostDollarFixer *const other, void(**vTable)(void));/*defualt: PrePostDollarFixer*/
+void PrePostDollarFixer_ctor_cc_cc(PrePostDollarFixer *const this, const char* prefix, const char* postfix, void_func_ptr* vTable);/*defualt: PrePostDollarFixer*/
+void PrePostDollarFixer_copy_ctor(PrePostDollarFixer *const this, const PrePostDollarFixer *const other, void_func_ptr* vTable);/*defualt: PrePostDollarFixer*/
 void PrePostDollarFixer_dtor(PrePostDollarFixer *const this);
 
 /*default symbol is PrePostDollarFixer_DEFAULT_SYMBOL*/
@@ -118,6 +126,51 @@ char PrePostDollarFixer_getDefaultSymbol(const PrePostDollarFixer *const this);
 /* PrePostDollarFixer inlines:
  * no inlines*/
 
+
+/* 5 ---PrePostHashFixer--- */
+typedef struct _PrePostHashFixer{
+    PrePostDollarFixer m_PrePostDollarFixerBase;
+    int m_precision;
+}PrePostHashFixer;
+
+extern const char PrePostHashFixer_DEFAULT_SYMBOL;
+
+void PrePostHashFixer_ctor(PrePostHashFixer *const this, int prc, void_func_ptr* vTable);/*default prc: 4*/
+void PrePostHashFixer_dtor(PrePostHashFixer *const this);
+
+/*default symbol is PrePostHashFixer_DEFAULT_SYMBOL*/
+void PrePostHashFixer_print_i_c(const PrePostHashFixer *const this, int num, char symbol);
+void PrePostHashFixer_print_l_c(const PrePostHashFixer *const this, long num, char symbol);
+char PrePostHashFixer_getDefaultSymbol(const PrePostHashFixer *const this);
+
+
+/* PrePostHashFixer inlines:
+inline void PrePostHashFixer::print(double num, char symbol) const
+{
+printFunc("[PrePostHashFixer::print(double, char)]");
+
+printf("%s[%c%.*f]%s\n", getPrefix(), symbol, precision, num, getPostfix());
+}
+
+*/
+
+
+
+/*6 ---PrePostFloatDollarFixer--- */
+typedef struct _PrePostFloatDollarFixer{
+    PrePostDollarFixer m_PrePostDollarFixerBase;
+}PrePostFloatDollarFixer;
+
+extern const char PrePostFloatDollarFixer_DEFAULT_SYMBOL;
+
+void PrePostFloatDollarFixer_ctor(PrePostFloatDollarFixer *const this, const char* prefix, const char* postfix, void_func_ptr* vTable);/*default is PrePostFloatDollarFixerVTable*/
+void PrePostFloatDollarFixer_dtor(PrePostFloatDollarFixer *const this);
+void PrePostFloatDollarFixer_print_f(const PrePostFloatDollarFixer *const this, float num);
+void PrePostFloatDollarFixer_print_f_c(const PrePostFloatDollarFixer *const this, float num, char symbol);
+char PrePostFloatDollarFixer_getDefaultSymbol(const PrePostFloatDollarFixer *const this);
+
+/* PrePostFloatDollarFixer inlines:
+ * no inlines*/
 
 
 
@@ -253,7 +306,7 @@ inline char PrePostDollarFixer::getDefaultSymbol() const
 {
     return DEFAULT_SYMBOL;
 }
-*/
+
 
 //// PrePostHashFixer ////////////
 
@@ -310,7 +363,7 @@ inline char PrePostFloatDollarFixer::getDefaultSymbol() const
 {
     return DEFAULT_SYMBOL;
 }
-
+*/
 //// PrePostChecker ////////////
 
 class PrePostChecker: public PrePostFloatDollarFixer
@@ -369,14 +422,6 @@ inline void Multiplier::setTimes(int t)
  * -------------------------------------------------------------------------------------------------------
  * ------------------------------------------------------------------------------------------------------*/
 
-
-typedef void (*func_ptr)(void);
-
-/*vTables*/
-void(*TextFormatterVTable[2])(void)  = {(func_ptr)TextFormatter_dtor, (func_ptr)TextFormatter_print};
-void(*DefaultTextFormatterVTable[2])(void)  = {(func_ptr)DefaultTextFormatter_dtor, (func_ptr)DefaultTextFormatter_print};
-void(*PrePostFixerVTable[4])(void)  = {(func_ptr)PrePostFixer_dtor, (func_ptr)PrePostFixer_print_cc, (func_ptr)PrePostFixer_print_l_c, (func_ptr)PrePostFixer_getDefaultSymbol};
-void(*PrePostDollarFixerVTable[4])(void)  = {(func_ptr)PrePostDollarFixer_dtor, (func_ptr)PrePostFixer_print_cc, (func_ptr)PrePostDollarFixer_print_l_c, (func_ptr)PrePostDollarFixer_getDefaultSymbol};
 
 
 #endif

@@ -1,8 +1,17 @@
 #include "cpp2c_polymorphism_defs.h"
 #include "stdlib.h"
 
+
+void(*TextFormatterVTable[2])(void)  = {(void_func_ptr)TextFormatter_dtor, (void_func_ptr)TextFormatter_print};
+void(*DefaultTextFormatterVTable[2])(void)  = {(void_func_ptr)DefaultTextFormatter_dtor, (void_func_ptr)DefaultTextFormatter_print};
+void(*PrePostFixerVTable[4])(void)  = {(void_func_ptr)PrePostFixer_dtor, (void_func_ptr)PrePostFixer_print_cc, (void_func_ptr)PrePostFixer_print_l_c, (void_func_ptr)PrePostFixer_getDefaultSymbol};
+void(*PrePostDollarFixerVTable[4])(void)  = {(void_func_ptr)PrePostDollarFixer_dtor, (void_func_ptr)PrePostFixer_print_cc, (void_func_ptr)PrePostDollarFixer_print_l_c, (void_func_ptr)PrePostDollarFixer_getDefaultSymbol};
+void(*PrePostHashFixerVTable[4])(void)  = {(void_func_ptr)PrePostHashFixer_dtor, (void_func_ptr)PrePostFixer_print_cc, (void_func_ptr)PrePostHashFixer_print_l_c, (void_func_ptr)PrePostHashFixer_getDefaultSymbol};
+
+
+
 /* 1---TextFormatter--- */
-void TextFormatter_ctor(TextFormatter *const this, void(**vTable)(void)){/*defualt: TextFormatterVTable*/
+void TextFormatter_ctor(TextFormatter *const this, void_func_ptr* vTable){/*defualt: TextFormatterVTable*/
     this->m_vptr = vTable;
 }
 
@@ -12,7 +21,7 @@ void TextFormatter_dtor(TextFormatter *const this){}
 /* 2---DefaultTextFormatter_Ider_next_id--- */
 int DefaultTextFormatter_Ider_next_id = 0;
 
-void DefaultTextFormatter_ctor(DefaultTextFormatter *const this, void(**vTable)(void)){/*defualt: DefaultTextFormatterVTable*/
+void DefaultTextFormatter_ctor(DefaultTextFormatter *const this, void_func_ptr* vTable){/*defualt: DefaultTextFormatterVTable*/
     TextFormatter_ctor((TextFormatter*)this, vTable);
     ((TextFormatter*)this)->m_vptr = DefaultTextFormatterVTable;
 
@@ -22,7 +31,7 @@ void DefaultTextFormatter_ctor(DefaultTextFormatter *const this, void(**vTable)(
     printf("--- DefaultTextFormatter Default CTOR\n########## C %d ##########\n", this->m_id);
 }
 
-void DefaultTextFormatter_copy_ctor(DefaultTextFormatter *const this, const DefaultTextFormatter *const other, void(**vTable)(void)){/*defualt: DefaultTextFormatterVTable*/
+void DefaultTextFormatter_copy_ctor(DefaultTextFormatter *const this, const DefaultTextFormatter *const other, void_func_ptr* vTable){/*defualt: DefaultTextFormatterVTable*/
     TextFormatter_ctor((TextFormatter*)this, vTable);
     /*that's what it does - changes vptr in overloaded copy ctor????*/
 
@@ -61,7 +70,7 @@ DefaultTextFormatter* generateFormatterArray()
 
 
 /* 3---PrePostFixer--- */
-void PrePostFixer_ctor(PrePostFixer *const this, const char* prefix, const char* postfix, void(**vTable)(void)){/*defualt: PrePostFixerVTable*/
+void PrePostFixer_ctor(PrePostFixer *const this, const char* prefix, const char* postfix, void_func_ptr* vTable){/*defualt: PrePostFixerVTable*/
     DefaultTextFormatter_ctor((DefaultTextFormatter*)this, vTable);
     this->m_pre = prefix;
     this->m_post = postfix;
@@ -70,12 +79,10 @@ void PrePostFixer_ctor(PrePostFixer *const this, const char* prefix, const char*
 }
 
 /*I declared:*/
-void PrePostFixer_copy_ctor(PrePostFixer *const this, const PrePostFixer *const other, void(**vTable)(void)){/*defualt: PrePostFixerVTable*/
+void PrePostFixer_copy_ctor(PrePostFixer *const this, const PrePostFixer *const other, void_func_ptr* vTable){/*defualt: PrePostFixerVTable*/
     DefaultTextFormatter_copy_ctor((DefaultTextFormatter*)this, (DefaultTextFormatter*)other, vTable);
     this->m_pre = other->m_pre;
     this->m_post = other->m_post;
-
-    ((TextFormatter*)this)->m_vptr = PrePostFixerVTable;
 }
 
 void PrePostFixer_dtor(PrePostFixer *const this){
@@ -83,7 +90,7 @@ void PrePostFixer_dtor(PrePostFixer *const this){
     DefaultTextFormatter_dtor((DefaultTextFormatter*)this);
 }
 
-void PrePostFixer_print_cc(const PrePostFixer *const this, const char* text){
+void PrePostFixer_print_cc(const void *const this, const char* text){
     printf("%-60s | ", "[PrePostFixer::print(const char*)]");
     printf("%s%s%s\n", this->m_pre, text, this->m_post);
 }
@@ -111,16 +118,16 @@ char PrePostFixer_getDefaultSymbol(const PrePostFixer *const this){
 /*4 ---PrePostDollarFixer Defs--- */
 const char PrePostDollarFixer_DEFAULT_SYMBOL = '$';
 
-void PrePostDollarFixer_ctor_cc_cc(PrePostDollarFixer *const this, const char* prefix, const char* postfix, void(**vTable)(void))/*defualt: PrePostDollarFixer*/
+void PrePostDollarFixer_ctor_cc_cc(PrePostDollarFixer *const this, const char* prefix, const char* postfix, void_func_ptr* vTable)/*defualt: PrePostDollarFixer*/
 {
     PrePostFixer_ctor((PrePostFixer*)this, prefix, postfix, vTable);
 
     printf("--- PrePostDollarFixer CTOR: \"%s\"...\"%s\"\n", ((PrePostFixer*)this)->m_pre, ((PrePostFixer*)this)->m_post);
 }
 
-void PrePostDollarFixer_copy_ctor(PrePostDollarFixer *const this, const PrePostDollarFixer *const other, void(**vTable)(void))/*defualt: PrePostDollarFixer*/
+void PrePostDollarFixer_copy_ctor(PrePostDollarFixer *const this, const PrePostDollarFixer *const other, void_func_ptr* vTable)/*defualt: PrePostDollarFixer*/
 {
-    PrePostFixer_copy_ctor((PrePostFixer*)other, vTable);
+    PrePostFixer_copy_ctor((PrePostFixer*)this,(PrePostFixer*)other, vTable);
 
     printf("--- PrePostDollarFixer CTOR: \"%s\"...\"%s\"\n", ((PrePostFixer*)this)->m_pre, ((PrePostFixer*)this)->m_post);
 }
@@ -135,7 +142,7 @@ void PrePostDollarFixer_print_i_c(const PrePostDollarFixer *const this, int num,
     printf("%-60s | ", "[PrePostDollarFixer::print(int, char)]");
     printf("-->\n");
 
-    this[_Z5printElc];
+    ((void_long_char_func_ptr)(((void_func_ptr*)this)[_Z5printElc]))(this, (long)num, symbol);
 }
 
 void PrePostDollarFixer_print_l_c(const PrePostDollarFixer *const this, long num, char symbol)/*vitrual*/
@@ -159,6 +166,85 @@ char PrePostDollarFixer_getDefaultSymbol(const PrePostDollarFixer *const this)
 
 
 
+
+/*5 ---PrePostHashFixer--- */
+const char PrePostHashFixer_DEFAULT_SYMBOL = '#';
+
+void PrePostHashFixer_ctor(PrePostHashFixer *const this, int prc, void_func_ptr* vTable)/*default prc: 4*/
+{
+    PrePostDollarFixer_ctor_cc_cc(((PrePostDollarFixer*)this), "===> ", " <===", vTable);
+    this->m_precision = prc;
+
+    printf("--- PrePostHashFixer CTOR: \"%s\"...\"%s\", precision: %d\n", ((PrePostFixer*)this)->m_pre, ((PrePostFixer*)this)->m_post, this->m_precision);
+
+    printf("%-60s | ", "[PrePostHashFixer::print(double, char)]");
+    printf("%s[%c%.*f]%s\n", ((PrePostFixer*)this)->m_pre, PrePostHashFixer_DEFAULT_SYMBOL, this->m_precision, 9999.9999, ((PrePostFixer*)this)->m_post);
+}
+
+void PrePostHashFixer_dtor(PrePostHashFixer *const this)
+{
+    printf("--- PrePostHashFixer DTOR: \"%s\"...\"%s\"\n", ((PrePostFixer*)this)->m_pre, ((PrePostFixer*)this)->m_post);
+    PrePostDollarFixer_dtor((PrePostDollarFixer*)this);
+}
+
+/*default symbol is PrePostHashFixer_DEFAULT_SYMBOL*/
+void PrePostHashFixer_print_i_c(const PrePostHashFixer *const this, int num, char symbol)
+{
+    printf("%-60s | ", "[PrePostHashFixer::print(int, char)]");
+    printf("-->\n");
+
+    printf("%-60s | ", "[PrePostHashFixer::print(double, char)]");
+    printf("%s[%c%.*f]%s\n", ((PrePostFixer*)this)->m_pre, symbol, this->m_precision, num, ((PrePostFixer*)this)->m_post);
+}
+
+void PrePostHashFixer_print_l_c(const PrePostHashFixer *const this, long num, char symbol)
+{
+    printf("%-60s | ", "[PrePostHashFixer::print(long, char)]");
+    printf("-->\n");
+
+    printf("%-60s | ", "[PrePostHashFixer::print(double, char)]");
+    printf("%s[%c%.*f]%s\n", ((PrePostFixer*)this)->m_pre, symbol, this->m_precision, num, ((PrePostFixer*)this)->m_post);
+}
+
+char PrePostHashFixer_getDefaultSymbol(const PrePostHashFixer *const this)
+{
+    return PrePostHashFixer_DEFAULT_SYMBOL;
+}
+
+
+/*6 ---PrePostFloatDollarFixer--- */
+const char PrePostFloatDollarFixer_DEFAULT_SYMBOL = '@';
+
+void PrePostFloatDollarFixer_ctor(PrePostFloatDollarFixer *const this, const char* prefix, const char* postfix, void_func_ptr* vTable)
+{
+    PrePostDollarFixer_ctor_cc_cc((PrePostDollarFixer*)this, prefix, postfix, vTable);
+    printf("--- PrePostFloatDollarFixer CTOR: \"%s\"...\"%s\"\n", ((PrePostFixer*)this)->m_pre, ((PrePostFixer*)this)->m_post);
+}
+
+void PrePostFloatDollarFixer_dtor(PrePostFloatDollarFixer *const this)
+{
+    printf("--- PrePostFloatDollarFixer DTOR: \"%s\"...\"%s\"\n", ((PrePostFixer*)this)->m_pre, ((PrePostFixer*)this)->m_post);
+    PrePostDollarFixer_dtor((PrePostDollarFixer*)this);
+}
+
+void PrePostFloatDollarFixer_print_f(const PrePostFloatDollarFixer *const this, float num)
+{
+    printf("%-60s | ", "[PrePostFloatDollarFixer::print(float)]");
+    printf("-->\n");
+
+    PrePostFloatDollarFixer_print_f_c(this, num, PrePostFloatDollarFixer_DEFAULT_SYMBOL);
+}
+
+void PrePostFloatDollarFixer_print_f_c(const PrePostFloatDollarFixer *const this, float num, char symbol)
+{
+    printf("%-60s | ", "[PrePostFloatDollarFixer::print(float, char)]");
+    printf("%s%c%.2f%s\n", ((PrePostFixer*)this)->m_pre, symbol, num, ((PrePostFixer*)this)->m_post);
+}
+
+char PrePostFloatDollarFixer_getDefaultSymbol(const PrePostFloatDollarFixer *const this)
+{
+    return PrePostFloatDollarFixer_DEFAULT_SYMBOL;
+}
 
 /*---------------------------------------------source------------------------------------------------
  * --------------------------------------------------------------------------------------------------
@@ -267,7 +353,7 @@ void PrePostDollarFixer::print(double num, char symbol) const
     printf("%s%c%f%s\n", getPrefix(), symbol, num, getPostfix());
 }
 
-*/
+
 
 //// PrePostHashFixer Defs ////////////
 
@@ -329,6 +415,8 @@ void PrePostFloatDollarFixer::print(float num, char symbol) const
 
     printf("%s%c%.2f%s\n", getPrefix(), symbol, num, getPostfix());
 }
+*/
+
 
 //// PrePostChecker Defs ////////////
 

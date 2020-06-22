@@ -10,9 +10,30 @@ void doPrePostFixer()
 
     _ZNC12PrePostFixerEPKsKPcKPc(&angleBrackets, "<<< ", " >>>");
     _ZN12PrePostFixer5printEKPKvKPc(&angleBrackets, "Hello World!");
-    _ZN12PrePostFixer5printEKPKvlc(&angleBrackets, -777, '\0');
-    _ZN12PrePostFixer5printEKPKvlc(&angleBrackets, 350, '#');
-    _ZN12PrePostFixer5printEKPKvlc(&angleBrackets, 3, '\0');
+
+    /*print 1 - ZN12PrePostFixer5printEKPKvlc(&angleBrackets, -777, '\0');*/
+    printf("%-60s | ", "[PrePostFixer::print(long, char)]");
+    printf("-->\n");
+
+    printf("%-60s | ", "[PrePostFixer::print_num(long)]");
+    printf("%s%ld%s\n", ((PrePostFixer*)&angleBrackets)->m_pre, (long)-777, ((PrePostFixer*)&angleBrackets)->m_post);
+
+
+    /*print 2 - _ZN12PrePostFixer5printEKPKvlc(&angleBrackets, 350, '#');*/
+    printf("%-60s | ", "[PrePostFixer::print(long, char)]");
+    printf("-->\n");
+
+    printf("%-60s | ", "[PrePostFixer::print_num(long, char)]");
+    printf("%s%c%ld%s\n", ((PrePostFixer*)&angleBrackets)->m_pre, '#', (long)350, ((PrePostFixer*)&angleBrackets)->m_post);
+
+
+    /*print 3 - _ZN12PrePostFixer5printEKPKvlc(&angleBrackets, 3, '\0');*/
+    printf("%-60s | ", "[PrePostFixer::print(long, char)]");
+    printf("-->\n");
+
+    printf("%-60s | ", "[PrePostFixer::print_num(long)]");
+    printf("%s%ld%s\n", ((PrePostFixer*)&angleBrackets)->m_pre, (long)3, ((PrePostFixer*)&angleBrackets)->m_post);
+
 
     printf("\n--- end doPrePostFixer() ---\n\n");
     _ZND12PrePostFixerEPKv(&angleBrackets);
@@ -140,10 +161,22 @@ void doMultiplier()
 
     printf("\n--- start doMultiplier() ---\n\n");
 
-    _ZND10Multiplier_dtorEPKs(&m4);
-    _ZND10Multiplier_dtorEPKs(&m3);
-    _ZND10Multiplier_dtorEPKs(&m2);
-    _ZND10Multiplier_dtorEPKs(&m1);
+    /*destructors*/
+    printf("--- Multiplier DTOR: times = %d\n", ((Multiplier*)&m4)->m_times);
+    ((TextFormatter*)&m4)->m_vptr = DefaultTextFormatterVTable;
+    _ZND20DefaultTextFormatterEPKv((DefaultTextFormatter *) &m4);
+
+    printf("--- Multiplier DTOR: times = %d\n", ((Multiplier*)&m3)->m_times);
+    ((TextFormatter*)&m3)->m_vptr = DefaultTextFormatterVTable;
+    _ZND20DefaultTextFormatterEPKv((DefaultTextFormatter *) &m3);
+
+    printf("--- Multiplier DTOR: times = %d\n", ((Multiplier*)&m2)->m_times);
+    ((TextFormatter*)&m2)->m_vptr = DefaultTextFormatterVTable;
+    _ZND20DefaultTextFormatterEPKv((DefaultTextFormatter *) &m2);
+
+    printf("--- Multiplier DTOR: times = %d\n", ((Multiplier*)&m1)->m_times);
+    ((TextFormatter*)&m1)->m_vptr = DefaultTextFormatterVTable;
+    _ZND20DefaultTextFormatterEPKv((DefaultTextFormatter *) &m1);
 }
 
 void doFormatterArray()
@@ -165,7 +198,9 @@ void doFormatterArray()
     tempObj2.m_times = 4;
     printf("--- Multiplier CTOR: times = %d\n", tempObj2.m_times);
     _ZNC20DefaultTextFormatterEPKsKPKs(&obj2, (DefaultTextFormatter *) &tempObj2);
-    _ZND10Multiplier_dtorEPKs(&tempObj2);
+    /*Dtor*/    printf("--- Multiplier DTOR: times = %d\n", ((Multiplier*)&tempObj2)->m_times);
+    ((TextFormatter*)&tempObj2)->m_vptr = DefaultTextFormatterVTable;
+    _ZND20DefaultTextFormatterEPKv((DefaultTextFormatter *) &tempObj2);
 
     /*obj3*/_ZNC14PrePostCheckerEPKs(&tempObj3);
     _ZNC20DefaultTextFormatterEPKsKPKs(&obj3, (DefaultTextFormatter *) &tempObj3);

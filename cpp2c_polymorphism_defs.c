@@ -3,59 +3,59 @@
 #include "memory.h"
 
 /*VTables*/
-funcPtr_void_R_void TextFormatterVTable[]  = {(funcPtr_void_R_void)TextFormatter_dtor, NULL};
-funcPtr_void_R_void DefaultTextFormatterVTable[]  = {(funcPtr_void_R_void)DefaultTextFormatter_dtor, (funcPtr_void_R_void)DefaultTextFormatter_print};
-funcPtr_void_R_void PrePostFixerVTable[]  = {(funcPtr_void_R_void)PrePostFixer_dtor, (funcPtr_void_R_void)PrePostFixer_print_cc, (funcPtr_void_R_void)PrePostFixer_print_l_c, (funcPtr_void_R_void)PrePostFixer_getDefaultSymbol};
-funcPtr_void_R_void PrePostDollarFixerVTable[]  = {(funcPtr_void_R_void)PrePostDollarFixer_dtor, (funcPtr_void_R_void)PrePostFixer_print_cc, (funcPtr_void_R_void)PrePostDollarFixer_print_l_c, (funcPtr_void_R_void)PrePostDollarFixer_getDefaultSymbol};
-funcPtr_void_R_void PrePostHashFixerVTable[]  = {(funcPtr_void_R_void)PrePostHashFixer_dtor, (funcPtr_void_R_void)PrePostFixer_print_cc, (funcPtr_void_R_void)PrePostHashFixer_print_l_c, (funcPtr_void_R_void)PrePostHashFixer_getDefaultSymbol};
-funcPtr_void_R_void PrePostFloatDollarFixerVTable[]  = {(funcPtr_void_R_void)PrePostFloatDollarFixer_dtor, (funcPtr_void_R_void)PrePostFixer_print_cc, (funcPtr_void_R_void)PrePostFixer_print_l_c, (funcPtr_void_R_void)PrePostFloatDollarFixer_getDefaultSymbol};
-funcPtr_void_R_void PrePostCheckerVTable[]  = {(funcPtr_void_R_void)PrePostChecker_dtor, (funcPtr_void_R_void)PrePostFixer_print_cc, (funcPtr_void_R_void)PrePostFixer_print_l_c, (funcPtr_void_R_void)PrePostFloatDollarFixer_getDefaultSymbol};
-funcPtr_void_R_void MultiplierVTable[]  = {(funcPtr_void_R_void)Multiplier_dtor, (funcPtr_void_R_void)Multiplier_print_cc};
+funcPtr_pvRv TextFormatterVTable[]  = {(funcPtr_pvRv)_ZNC13TextFormatterEPKs, NULL};
+funcPtr_pvRv DefaultTextFormatterVTable[]  = {(funcPtr_pvRv)_ZND20DefaultTextFormatterEPKv, (funcPtr_pvRv)_ZN20DefaultTextFormatter5printEKPKvKPc};
+funcPtr_pvRv PrePostFixerVTable[]  = {(funcPtr_pvRv)_ZND12PrePostFixerEPKv, (funcPtr_pvRv)_ZN12PrePostFixer5printEKPKvKPc, (funcPtr_pvRv)_ZN12PrePostFixer5printEKPKvlc, (funcPtr_pvRv)_ZN12PrePostFixer16getDefaultSymbolEKPKv};
+funcPtr_pvRv PrePostDollarFixerVTable[]  = {(funcPtr_pvRv)_ZND18PrePostDollarFixerEPKv, (funcPtr_pvRv)_ZN12PrePostFixer5printEKPKvKPc, (funcPtr_pvRv)_ZNK18PrePostDollarFixer5printEKPKslc, (funcPtr_pvRv)_ZN18PrePostDollarFixer16getDefaultSymbolEKPKv};
+funcPtr_pvRv PrePostHashFixerVTable[]  = {(funcPtr_pvRv)_ZND16PrePostHashFixerEPKv, (funcPtr_pvRv)_ZN12PrePostFixer5printEKPKvKPc, (funcPtr_pvRv)_ZNK16PrePostHashFixer5printEKPKslc, (funcPtr_pvRv)_ZN16PrePostHashFixer16getDefaultSymbolEKPKv};
+funcPtr_pvRv PrePostFloatDollarFixerVTable[]  = {(funcPtr_pvRv)_ZND23PrePostFloatDollarFixerEPKv, (funcPtr_pvRv)_ZN12PrePostFixer5printEKPKvKPc, (funcPtr_pvRv)_ZN12PrePostFixer5printEKPKvlc, (funcPtr_pvRv)_ZN23PrePostFloatDollarFixer16getDefaultSymbolEKPKv};
+funcPtr_pvRv PrePostCheckerVTable[]  = {(funcPtr_pvRv)_ZND14PrePostCheckerEPKv, (funcPtr_pvRv)_ZN12PrePostFixer5printEKPKvKPc, (funcPtr_pvRv)_ZN12PrePostFixer5printEKPKvlc, (funcPtr_pvRv)_ZN23PrePostFloatDollarFixer16getDefaultSymbolEKPKv};
+funcPtr_pvRv MultiplierVTable[]  = {(funcPtr_pvRv)_ZND10Multiplier_dtorEPKs, (funcPtr_pvRv)_ZNK10Multiplier5printEKPKvKPc};
 
 
 
 /* 1---TextFormatter--- */
-void TextFormatter_dtor(void *const this){}
+void _ZNC13TextFormatterEPKs(void *const this){}
 
 
 /* 2---DefaultTextFormatter_Ider_next_id--- */
-int DefaultTextFormatter_Ider_next_id = 0;
+int _ZN20DefaultTextFormatter4Ider7next_idE = 0;
 
-void DefaultTextFormatter_ctor(DefaultTextFormatter *const this)
+void _ZNC20DefaultTextFormatterEPKs(DefaultTextFormatter *const this)
 {
     ((TextFormatter*)this)->m_vptr = DefaultTextFormatterVTable;/*TextFormatter ctor is inline*/
 
-    this->m_id = DefaultTextFormatter_Ider_next_id;
-    DefaultTextFormatter_Ider_next_id++;
+    this->m_id = _ZN20DefaultTextFormatter4Ider7next_idE;
+    _ZN20DefaultTextFormatter4Ider7next_idE++;
 
     printf("--- DefaultTextFormatter Default CTOR\n########## C %d ##########\n", this->m_id);
 }
 
-void DefaultTextFormatter_copy_ctor(DefaultTextFormatter *const this, const DefaultTextFormatter *const other)
+void _ZNC20DefaultTextFormatterEPKsKPKs(DefaultTextFormatter *const this, const DefaultTextFormatter *const other)
 {
     ((TextFormatter*)this)->m_vptr = DefaultTextFormatterVTable;
 
-    this->m_id = DefaultTextFormatter_Ider_next_id;
-    DefaultTextFormatter_Ider_next_id++;
+    this->m_id = _ZN20DefaultTextFormatter4Ider7next_idE;
+    _ZN20DefaultTextFormatter4Ider7next_idE++;
 
     printf("--- DefaultTextFormatter Copy CTOR, from id: %d\n########## C %d ##########\n", other->m_id, this->m_id);
 }
 
-DefaultTextFormatter* const DefaultTextFormatter_copy_assign(DefaultTextFormatter *const this, const DefaultTextFormatter *const other)
+DefaultTextFormatter* const _ZNC20DefaultTextFormatter10copyAssignEPKsKPKs(DefaultTextFormatter *const this, const DefaultTextFormatter *const other)
 {
     printf("--- DefaultTextFormatter operator=(), from id: %d to id: %d\n", other->m_id, this->m_id);
     return this;
 }
 
-void DefaultTextFormatter_dtor(void *const this)
+void _ZND20DefaultTextFormatterEPKv(void *const this)
 {
     printf("--- DefaultTextFormatter DTOR\n########## D %d ##########\n", ((DefaultTextFormatter*)this)->m_id);
 
     ((TextFormatter*)this)->m_vptr = TextFormatterVTable;
-    TextFormatter_dtor((TextFormatter*)this);
+    _ZNC13TextFormatterEPKs((TextFormatter *) this);
 }
 
-void DefaultTextFormatter_print(const void *const this, const char* text)
+void _ZN20DefaultTextFormatter5printEKPKvKPc(const void *const this, const char* text)
 {
     printf("%-60s | ", "[DefaultTextFormatter::print(const char*)]");
     printf("%s\n", text);
@@ -66,7 +66,7 @@ DefaultTextFormatter* generateFormatterArray()
     DefaultTextFormatter* ret = (DefaultTextFormatter*)malloc(3* sizeof(DefaultTextFormatter));
     size_t i;
     for(i=0; i<3; i++){
-        DefaultTextFormatter_ctor(&(ret[i]));
+        _ZNC20DefaultTextFormatterEPKs(&(ret[i]));
     }
 
     return ret;
@@ -74,9 +74,9 @@ DefaultTextFormatter* generateFormatterArray()
 
 
 /* 3---PrePostFixer--- */
-void PrePostFixer_ctor(PrePostFixer *const this, const char* prefix, const char* postfix)
+void _ZNC12PrePostFixerEPKsKPcKPc(PrePostFixer *const this, const char* prefix, const char* postfix)
 {
-    DefaultTextFormatter_ctor((DefaultTextFormatter*)this);
+    _ZNC20DefaultTextFormatterEPKs((DefaultTextFormatter *) this);
     ((TextFormatter*)this)->m_vptr = PrePostFixerVTable;
     this->m_pre = prefix;
     this->m_post = postfix;
@@ -85,27 +85,27 @@ void PrePostFixer_ctor(PrePostFixer *const this, const char* prefix, const char*
 }
 
 /*I declared:*/
-void PrePostFixer_copy_ctor(PrePostFixer *const this, const PrePostFixer *const other)
+void _ZNC12PrePostFixerEPKsKPK12PrePostFixer(PrePostFixer *const this, const PrePostFixer *const other)
 {
-    DefaultTextFormatter_copy_ctor((DefaultTextFormatter*)this, (DefaultTextFormatter*)other);
+    _ZNC20DefaultTextFormatterEPKsKPKs((DefaultTextFormatter *) this, (DefaultTextFormatter *) other);
     memcpy(&(this->m_pre), &(other->m_pre), strlen(other->m_pre)+1);
     memcpy(&(this->m_post), &(other->m_post), strlen(other->m_post)+1);
 }
 
-void PrePostFixer_dtor(void *const this)
+void _ZND12PrePostFixerEPKv(void *const this)
 {
     printf("--- PrePostFixer DTOR: \"%s\"...\"%s\"\n", ((PrePostFixer*)this)->m_pre, ((PrePostFixer*)this)->m_post);
     ((TextFormatter*)this)->m_vptr = DefaultTextFormatterVTable;
-    DefaultTextFormatter_dtor((DefaultTextFormatter*)this);
+    _ZND20DefaultTextFormatterEPKv((DefaultTextFormatter *) this);
 }
 
-void PrePostFixer_print_cc(const void *const this, const char* text)
+void _ZN12PrePostFixer5printEKPKvKPc(const void *const this, const char* text)
 {
     printf("%-60s | ", "[PrePostFixer::print(const char*)]");
     printf("%s%s%s\n", ((PrePostFixer*)this)->m_pre, text, ((PrePostFixer*)this)->m_post);
 }
 
-void PrePostFixer_print_l_c(const void *const this, long num, char symbol)/*default '\0'*/
+void _ZN12PrePostFixer5printEKPKvlc(const void *const this, long num, char symbol)/*default '\0'*/
 {
     printf("%-60s | ", "[PrePostFixer::print(long, char)]");
     printf("-->\n");
@@ -120,7 +120,7 @@ void PrePostFixer_print_l_c(const void *const this, long num, char symbol)/*defa
     }
 }
 
-char PrePostFixer_getDefaultSymbol(const void *const this)
+char _ZN12PrePostFixer16getDefaultSymbolEKPKv(const void *const this)
 {
     return '\0';
 }
@@ -128,67 +128,67 @@ char PrePostFixer_getDefaultSymbol(const void *const this)
 
 
 /*4 ---PrePostDollarFixer Defs--- */
-const char PrePostDollarFixer_DEFAULT_SYMBOL = '$';
+const char _ZN18PrePostDollarFixer14DEFAULT_SYMBOLE = '$';
 
-void PrePostDollarFixer_ctor_cc_cc(PrePostDollarFixer *const this, const char* prefix, const char* postfix)
+void _ZNC18PrePostDollarFixerEPKsKPcKPc(PrePostDollarFixer *const this, const char* prefix, const char* postfix)
 {
-    PrePostFixer_ctor((PrePostFixer*)this, prefix, postfix);
+    _ZNC12PrePostFixerEPKsKPcKPc((PrePostFixer *) this, prefix, postfix);
     ((TextFormatter*)this)->m_vptr = PrePostDollarFixerVTable;
 
     printf("--- PrePostDollarFixer CTOR: \"%s\"...\"%s\"\n", ((PrePostFixer*)this)->m_pre, ((PrePostFixer*)this)->m_post);
 }
 
-void PrePostDollarFixer_copy_ctor(PrePostDollarFixer *const this, const PrePostDollarFixer *const other)
+void _ZNC18PrePostDollarFixerEPKsKPK18PrePostDollarFixer(PrePostDollarFixer *const this, const PrePostDollarFixer *const other)
 {
-    PrePostFixer_copy_ctor((PrePostFixer*)this,(PrePostFixer*)other);
+    _ZNC12PrePostFixerEPKsKPK12PrePostFixer((PrePostFixer *) this, (PrePostFixer *) other);
     ((TextFormatter*)this)->m_vptr = PrePostDollarFixerVTable;
 
     printf("--- PrePostDollarFixer CTOR: \"%s\"...\"%s\"\n", ((PrePostFixer*)this)->m_pre, ((PrePostFixer*)this)->m_post);
 }
 
-void PrePostDollarFixer_dtor(void *const this)
+void _ZND18PrePostDollarFixerEPKv(void *const this)
 {
     printf("--- PrePostDollarFixer DTOR: \"%s\"...\"%s\"\n", ((PrePostFixer*)this)->m_pre, ((PrePostFixer*)this)->m_post);
     ((TextFormatter*)this)->m_vptr = PrePostFixerVTable;
-    PrePostFixer_dtor((PrePostFixer*)this);
+    _ZND12PrePostFixerEPKv((PrePostFixer *) this);
 }
 
-void PrePostDollarFixer_print_i_c(const PrePostDollarFixer *const this, int num, char symbol)
+void _ZNK18PrePostDollarFixer5printEKPKsic(const PrePostDollarFixer *const this, int num, char symbol)
 {
     printf("%-60s | ", "[PrePostDollarFixer::print(int, char)]");
     printf("-->\n");
 
-    ((funcPtr_pvoid_long_char_R_void)((((TextFormatter*)this)->m_vptr)[_Z5printElc]))(this, (long)num, symbol);
+    ((funcPtr_pvlcRv)((((TextFormatter*)this)->m_vptr)[_Z5printElc]))(this, (long)num, symbol);
 }
 
-void PrePostDollarFixer_print_l_c(const void *const this, long num, char symbol)/*vitrual*/
+void _ZNK18PrePostDollarFixer5printEKPKslc(const void *const this, long num, char symbol)/*vitrual*/
 {
     printf("%-60s | ", "[PrePostDollarFixer::print(long, char)]");
     printf("-->\n");
 
-    PrePostFixer_print_l_c((PrePostFixer*)this, num, symbol);
+    _ZN12PrePostFixer5printEKPKvlc((PrePostFixer *) this, num, symbol);
 }
 
-void PrePostDollarFixer_print_d_c(const PrePostDollarFixer *const this, double num, char symbol)
+void _ZNK18PrePostDollarFixer5printEKPKsdc(const PrePostDollarFixer *const this, double num, char symbol)
 {
     printf("%-60s | ", "[PrePostDollarFixer::print(double, char)]");
     printf("%s%c%f%s\n", ((PrePostFixer*)this)->m_pre, symbol, num, ((PrePostFixer*)this)->m_post);
 }
 
-char PrePostDollarFixer_getDefaultSymbol(const void *const this)
+char _ZN18PrePostDollarFixer16getDefaultSymbolEKPKv(const void *const this)
 {
-    return PrePostDollarFixer_DEFAULT_SYMBOL;
+    return _ZN18PrePostDollarFixer14DEFAULT_SYMBOLE;
 }
 
 
 
 
 /*5 ---PrePostHashFixer--- */
-const char PrePostHashFixer_DEFAULT_SYMBOL = '#';
+const char _ZN16PrePostHashFixer14DEFAULT_SYMBOLE = '#';
 
-void PrePostHashFixer_ctor(PrePostHashFixer *const this, int prc)/*default prc: 4*/
+void _ZNC16PrePostHashFixerEPKsi(PrePostHashFixer *const this, int prc)/*default prc: 4*/
 {
-    PrePostDollarFixer_ctor_cc_cc((PrePostDollarFixer*)this, "===> ", " <===");
+    _ZNC18PrePostDollarFixerEPKsKPcKPc((PrePostDollarFixer *) this, "===> ", " <===");
     ((TextFormatter*)this)->m_vptr = PrePostHashFixerVTable;
 
     this->m_precision = prc;
@@ -196,17 +196,17 @@ void PrePostHashFixer_ctor(PrePostHashFixer *const this, int prc)/*default prc: 
     printf("--- PrePostHashFixer CTOR: \"%s\"...\"%s\", precision: %d\n", ((PrePostFixer*)this)->m_pre, ((PrePostFixer*)this)->m_post, this->m_precision);
 
     printf("%-60s | ", "[PrePostHashFixer::print(double, char)]");
-    printf("%s[%c%.*f]%s\n", ((PrePostFixer*)this)->m_pre, PrePostHashFixer_DEFAULT_SYMBOL, this->m_precision, 9999.9999, ((PrePostFixer*)this)->m_post);
+    printf("%s[%c%.*f]%s\n", ((PrePostFixer*)this)->m_pre, _ZN16PrePostHashFixer14DEFAULT_SYMBOLE, this->m_precision, 9999.9999, ((PrePostFixer*)this)->m_post);
 }
 
-void PrePostHashFixer_dtor(void *const this)
+void _ZND16PrePostHashFixerEPKv(void *const this)
 {
     printf("--- PrePostHashFixer DTOR: \"%s\"...\"%s\"\n", ((PrePostFixer*)this)->m_pre, ((PrePostFixer*)this)->m_post);
     ((TextFormatter*)this)->m_vptr = PrePostDollarFixerVTable;
-    PrePostDollarFixer_dtor((PrePostDollarFixer*)this);
+    _ZND18PrePostDollarFixerEPKv((PrePostDollarFixer *) this);
 }
 
-void PrePostHashFixer_print_i_c(const PrePostHashFixer *const this, int num, char symbol)
+void _ZNK16PrePostHashFixer5printEKPKsic(const PrePostHashFixer *const this, int num, char symbol)
 {
     printf("%-60s | ", "[PrePostHashFixer::print(int, char)]");
     printf("-->\n");
@@ -216,7 +216,7 @@ void PrePostHashFixer_print_i_c(const PrePostHashFixer *const this, int num, cha
 }
 
 /*default symbol is PrePostHashFixer_DEFAULT_SYMBOL*/
-void PrePostHashFixer_print_l_c(const void *const this, long num, char symbol)
+void _ZNK16PrePostHashFixer5printEKPKslc(const void *const this, long num, char symbol)
 {
     printf("%-60s | ", "[PrePostHashFixer::print(long, char)]");
     printf("-->\n");
@@ -225,123 +225,123 @@ void PrePostHashFixer_print_l_c(const void *const this, long num, char symbol)
     printf("%s[%c%.*f]%s\n", ((PrePostFixer*)this)->m_pre, symbol, ((PrePostHashFixer*)this)->m_precision, (double)num, ((PrePostFixer*)this)->m_post);
 }
 
-char PrePostHashFixer_getDefaultSymbol(const void *const this)
+char _ZN16PrePostHashFixer16getDefaultSymbolEKPKv(const void *const this)
 {
-    return PrePostHashFixer_DEFAULT_SYMBOL;
+    return _ZN16PrePostHashFixer14DEFAULT_SYMBOLE;
 }
 
 
 /*6 ---PrePostFloatDollarFixer--- */
-const char PrePostFloatDollarFixer_DEFAULT_SYMBOL = '@';
+const char _ZN23PrePostFloatDollarFixer14DEFAULT_SYMBOLE = '@';
 
-void PrePostFloatDollarFixer_ctor(PrePostFloatDollarFixer *const this, const char* prefix, const char* postfix)
+void _ZNC23PrePostFloatDollarFixerEPKsKPcKPc(PrePostFloatDollarFixer *const this, const char* prefix, const char* postfix)
 {
-    PrePostDollarFixer_ctor_cc_cc((PrePostDollarFixer*)this, prefix, postfix);
+    _ZNC18PrePostDollarFixerEPKsKPcKPc((PrePostDollarFixer *) this, prefix, postfix);
     ((TextFormatter*)this)->m_vptr = PrePostFloatDollarFixerVTable;
     printf("--- PrePostFloatDollarFixer CTOR: \"%s\"...\"%s\"\n", ((PrePostFixer*)this)->m_pre, ((PrePostFixer*)this)->m_post);
 }
 
-void PrePostFloatDollarFixer_dtor(void *const this)
+void _ZND23PrePostFloatDollarFixerEPKv(void *const this)
 {
     printf("--- PrePostFloatDollarFixer DTOR: \"%s\"...\"%s\"\n", ((PrePostFixer*)this)->m_pre, ((PrePostFixer*)this)->m_post);
     ((TextFormatter*)this)->m_vptr = PrePostDollarFixerVTable;
-    PrePostDollarFixer_dtor((PrePostDollarFixer*)this);
+    _ZND18PrePostDollarFixerEPKv((PrePostDollarFixer *) this);
 }
 
-void PrePostFloatDollarFixer_print_f(const PrePostFloatDollarFixer *const this, float num)
+void _ZNK23PrePostFloatDollarFixer5printEKPKsf(const PrePostFloatDollarFixer *const this, float num)
 {
     printf("%-60s | ", "[PrePostFloatDollarFixer::print(float)]");
     printf("-->\n");
 
-    PrePostFloatDollarFixer_print_f_c(this, num, PrePostFloatDollarFixer_DEFAULT_SYMBOL);
+    _ZNK23PrePostFloatDollarFixer5printEKPKsfc(this, num, _ZN23PrePostFloatDollarFixer14DEFAULT_SYMBOLE);
 }
 
-void PrePostFloatDollarFixer_print_f_c(const PrePostFloatDollarFixer *const this, float num, char symbol)
+void _ZNK23PrePostFloatDollarFixer5printEKPKsfc(const PrePostFloatDollarFixer *const this, float num, char symbol)
 {
     printf("%-60s | ", "[PrePostFloatDollarFixer::print(float, char)]");
     printf("%s%c%.2f%s\n", ((PrePostFixer*)this)->m_pre, symbol, num, ((PrePostFixer*)this)->m_post);
 }
 
-char PrePostFloatDollarFixer_getDefaultSymbol(const void *const this)
+char _ZN23PrePostFloatDollarFixer16getDefaultSymbolEKPKv(const void *const this)
 {
-    return PrePostFloatDollarFixer_DEFAULT_SYMBOL;
+    return _ZN23PrePostFloatDollarFixer14DEFAULT_SYMBOLE;
 }
 
 
 /*7 ---PrePostChecker Defs--- */
-void PrePostChecker_ctor(PrePostChecker *const this)
+void _ZNC14PrePostCheckerEPKs(PrePostChecker *const this)
 {
-    PrePostFloatDollarFixer_ctor((PrePostFloatDollarFixer*)this, "[[[[ ", " ]]]]");
+    _ZNC23PrePostFloatDollarFixerEPKsKPcKPc((PrePostFloatDollarFixer *) this, "[[[[ ", " ]]]]");
     ((TextFormatter*)this)->m_vptr = PrePostCheckerVTable;
     printf("--- PrePostChecker CTOR: \"%s\"...\"%s\"\n", ((PrePostFixer*)this)->m_pre, ((PrePostFixer*)this)->m_post);
 }
 
-void PrePostChecker_dtor(void *const this)
+void _ZND14PrePostCheckerEPKv(void *const this)
 {
     printf("--- PrePostChecker CTOR: \"%s\"...\"%s\"\n", ((PrePostFixer*)this)->m_pre, ((PrePostFixer*)this)->m_post);
     ((TextFormatter*)this)->m_vptr = PrePostFloatDollarFixerVTable;
-    PrePostFloatDollarFixer_dtor((PrePostFloatDollarFixer*)this);
+    _ZND23PrePostFloatDollarFixerEPKv((PrePostFloatDollarFixer *) this);
 }
 
-void PrePostChecker_printThisSymbolUsingFunc(const PrePostChecker *const this)
+void _ZNK14PrePostChecker24printThisSymbolUsingFuncEKPKs(const PrePostChecker *const this)
 {
     printf("%-60s | ", "[PrePostChecker::printThisSymbolUsingFunc()]");
-    printf("Default symbol is %c\n", ((funcPtr_pvoid_R_char)((((TextFormatter*)this)->m_vptr)[_Z13defaultSymbolE]))(this));
+    printf("Default symbol is %c\n", ((funcPtr_pvRc)((((TextFormatter*)this)->m_vptr)[_Z13defaultSymbolE]))(this));
 }
 
-void PrePostChecker_printThisSymbolDirectly(const PrePostChecker *const this)
+void _ZNK14PrePostChecker23printThisSymbolDirectlyEKPKs(const PrePostChecker *const this)
 {
     printf("%-60s | ", "[PrePostChecker::printThisSymbolDirectly()]");
 
-    printf("Default symbol is %c\n", PrePostFloatDollarFixer_DEFAULT_SYMBOL);
+    printf("Default symbol is %c\n", _ZN23PrePostFloatDollarFixer14DEFAULT_SYMBOLE);
 }
 
-void PrePostChecker_printDollarSymbolByCastUsingFunc(const PrePostChecker *const this)
+void _ZNK14PrePostChecker32printDollarSymbolByCastUsingFuncEKPKs(const PrePostChecker *const this)
 {
     printf("%-60s | ", "[PrePostChecker::printDollarSymbolByCastUsingFunc()]");
-    printf("Default symbol is %c\n", ((funcPtr_pvoid_R_char)((((TextFormatter*)this)->m_vptr)[_Z13defaultSymbolE]))(this));
+    printf("Default symbol is %c\n", ((funcPtr_pvRc)((((TextFormatter*)this)->m_vptr)[_Z13defaultSymbolE]))(this));
     /*printf("Default symbol is %c\n", ((PrePostDollarFixer*)(this))->getDefaultSymbol());*/
 }
 
-void PrePostChecker_printDollarSymbolByScopeUsingFunc(const PrePostChecker *const this)
+void _ZNK14PrePostChecker33printDollarSymbolByScopeUsingFuncEKPKs(const PrePostChecker *const this)
 {
     printf("%-60s | ", "[PrePostChecker::printDollarSymbolByScopeUsingFunc()]");
 
-    printf("Default symbol is %c\n", PrePostDollarFixer_getDefaultSymbol(this));
+    printf("Default symbol is %c\n", _ZN18PrePostDollarFixer16getDefaultSymbolEKPKv(this));
 }
 
-void PrePostChecker_printDollarSymbolByCastDirectly(const PrePostChecker *const this)
+void _ZNK14PrePostChecker31printDollarSymbolByCastDirectlyEKPKs(const PrePostChecker *const this)
 {
     printf("%-60s | ", "[PrePostChecker::printDollarSymbolByCastDirectly()]");
 
-    printf("Default symbol is %c\n", PrePostDollarFixer_DEFAULT_SYMBOL);
+    printf("Default symbol is %c\n", _ZN18PrePostDollarFixer14DEFAULT_SYMBOLE);
 }
 
-void PrePostChecker_printDollarSymbolByScopeDirectly(const PrePostChecker *const this)
+void _ZNK14PrePostChecker32printDollarSymbolByScopeDirectlyEKPKs(const PrePostChecker *const this)
 {
     printf("%-60s | ", "[PrePostChecker::printDollarSymbolByScopeDirectly()]");
 
-    printf("Default symbol is %c\n", PrePostDollarFixer_DEFAULT_SYMBOL);
+    printf("Default symbol is %c\n", _ZN18PrePostDollarFixer14DEFAULT_SYMBOLE);
 }
 
 
 
 /*8 ---Multiplier--- */
-void Multiplier_dtor(Multiplier *const this)
+void _ZND10Multiplier_dtorEPKs(Multiplier *const this)
 {
     printf("--- Multiplier DTOR: times = %d\n", this->m_times);
     ((TextFormatter*)this)->m_vptr = DefaultTextFormatterVTable;
-    DefaultTextFormatter_dtor((DefaultTextFormatter*)this);
+    _ZND20DefaultTextFormatterEPKv((DefaultTextFormatter *) this);
 }
 
-void Multiplier_copy_ctor(Multiplier *const this, const Multiplier *const other){
-    DefaultTextFormatter_copy_ctor((DefaultTextFormatter*)this, (DefaultTextFormatter*)other);
+void _ZNC10Multiplier_dtorEPKsKPK10Multiplier(Multiplier *const this, const Multiplier *const other){
+    _ZNC20DefaultTextFormatterEPKsKPKs((DefaultTextFormatter *) this, (DefaultTextFormatter *) other);
     ((TextFormatter*)this)->m_vptr = DefaultTextFormatterVTable;
     memcpy(&(this->m_times), &(other->m_times), sizeof(this->m_times));
 }
 
 
-void Multiplier_print_cc(const void *const this, const char* text)
+void _ZNK10Multiplier5printEKPKvKPc(const void *const this, const char* text)
 {
     int i, times = ((Multiplier*)this)->m_times;
     printf("%-60s | ", "[Multiplier::print(const char*)]");

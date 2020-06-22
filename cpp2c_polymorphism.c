@@ -8,14 +8,14 @@ void doPrePostFixer()
     PrePostFixer angleBrackets;
     printf("\n--- start doPrePostFixer() ---\n\n");
 
-    PrePostFixer_ctor(&angleBrackets, "<<< ", " >>>");
-    PrePostFixer_print_cc(&angleBrackets,"Hello World!");
-    PrePostFixer_print_l_c(&angleBrackets, -777, '\0');
-    PrePostFixer_print_l_c(&angleBrackets, 350, '#');
-    PrePostFixer_print_l_c(&angleBrackets, 3, '\0');
+    _ZNC12PrePostFixerEPKsKPcKPc(&angleBrackets, "<<< ", " >>>");
+    _ZN12PrePostFixer5printEKPKvKPc(&angleBrackets, "Hello World!");
+    _ZN12PrePostFixer5printEKPKvlc(&angleBrackets, -777, '\0');
+    _ZN12PrePostFixer5printEKPKvlc(&angleBrackets, 350, '#');
+    _ZN12PrePostFixer5printEKPKvlc(&angleBrackets, 3, '\0');
 
     printf("\n--- end doPrePostFixer() ---\n\n");
-    PrePostFixer_dtor(&angleBrackets);
+    _ZND12PrePostFixerEPKv(&angleBrackets);
 }
 
 void doPrePostDollarFixer()
@@ -23,13 +23,13 @@ void doPrePostDollarFixer()
     PrePostDollarFixer asterisks;
     printf("\n--- start doPrePostDollarFixer() ---\n\n");
 
-    PrePostDollarFixer_ctor_cc_cc(&asterisks, "***** ", " *****");
-    PrePostDollarFixer_print_i_c(&asterisks, -777, PrePostDollarFixer_DEFAULT_SYMBOL);
-    PrePostDollarFixer_print_i_c(&asterisks, 350, '#');
-    PrePostDollarFixer_print_d_c(&asterisks, 3.14f, PrePostDollarFixer_DEFAULT_SYMBOL);
+    _ZNC18PrePostDollarFixerEPKsKPcKPc(&asterisks, "***** ", " *****");
+    _ZNK18PrePostDollarFixer5printEKPKsic(&asterisks, -777, _ZN18PrePostDollarFixer14DEFAULT_SYMBOLE);
+    _ZNK18PrePostDollarFixer5printEKPKsic(&asterisks, 350, '#');
+    _ZNK18PrePostDollarFixer5printEKPKsdc(&asterisks, 3.14f, _ZN18PrePostDollarFixer14DEFAULT_SYMBOLE);
 
     printf("\n--- end doPrePostDollarFixer() ---\n\n");
-    PrePostDollarFixer_dtor(&asterisks);
+    _ZND18PrePostDollarFixerEPKv(&asterisks);
 }
 
 void doPrePostChecker()
@@ -37,17 +37,17 @@ void doPrePostChecker()
     PrePostChecker check;
     printf("\n--- start doPrePostChecker() ---\n\n");
 
-    PrePostChecker_ctor(&check);
+    _ZNC14PrePostCheckerEPKs(&check);
 
-    PrePostChecker_printThisSymbolUsingFunc(&check);
-    PrePostChecker_printThisSymbolDirectly(&check);
-    PrePostChecker_printDollarSymbolByCastDirectly(&check);
-    PrePostChecker_printDollarSymbolByScopeDirectly(&check);
-    PrePostChecker_printDollarSymbolByCastUsingFunc(&check);
-    PrePostChecker_printDollarSymbolByScopeUsingFunc(&check);
+    _ZNK14PrePostChecker24printThisSymbolUsingFuncEKPKs(&check);
+    _ZNK14PrePostChecker23printThisSymbolDirectlyEKPKs(&check);
+    _ZNK14PrePostChecker31printDollarSymbolByCastDirectlyEKPKs(&check);
+    _ZNK14PrePostChecker32printDollarSymbolByScopeDirectlyEKPKs(&check);
+    _ZNK14PrePostChecker32printDollarSymbolByCastUsingFuncEKPKs(&check);
+    _ZNK14PrePostChecker33printDollarSymbolByScopeUsingFuncEKPKs(&check);
 
     printf("\n--- end doPrePostChecker() ---\n\n");
-    PrePostChecker_dtor(&check);
+    _ZND14PrePostCheckerEPKv(&check);
 }
 
 void doPrePostFloatDollarFixer()
@@ -57,26 +57,26 @@ void doPrePostFloatDollarFixer()
 
     printf("\n--- start doPrePostFloatDollarFixer() ---\n\n");
 
-    PrePostFloatDollarFixer_ctor(&hashes, "### ", " ###");
-    PrePostFloatDollarFixer_print_f(&hashes, -777);
-    PrePostFloatDollarFixer_print_f_c(&hashes, 350, '#');
-    PrePostFloatDollarFixer_print_f(&hashes, 3.14f);
+    _ZNC23PrePostFloatDollarFixerEPKsKPcKPc(&hashes, "### ", " ###");
+    _ZNK23PrePostFloatDollarFixer5printEKPKsf(&hashes, -777);
+    _ZNK23PrePostFloatDollarFixer5printEKPKsfc(&hashes, 350, '#');
+    _ZNK23PrePostFloatDollarFixer5printEKPKsf(&hashes, 3.14f);
 
 
-    PrePostDollarFixer_copy_ctor(&hashes2, (PrePostDollarFixer*)(&hashes));
-    PrePostDollarFixer_print_d_c(&hashes2, 7.5, PrePostDollarFixer_DEFAULT_SYMBOL);
-    PrePostDollarFixer_print_i_c(&hashes2, 100, PrePostDollarFixer_DEFAULT_SYMBOL);
+    _ZNC18PrePostDollarFixerEPKsKPK18PrePostDollarFixer(&hashes2, (PrePostDollarFixer *) (&hashes));
+    _ZNK18PrePostDollarFixer5printEKPKsdc(&hashes2, 7.5, _ZN18PrePostDollarFixer14DEFAULT_SYMBOLE);
+    _ZNK18PrePostDollarFixer5printEKPKsic(&hashes2, 100, _ZN18PrePostDollarFixer14DEFAULT_SYMBOLE);
 
     printf("\n--- start doPrePostFloatDollarFixer() ---\n\n");
-    PrePostDollarFixer_dtor(&hashes2);
-    PrePostFloatDollarFixer_dtor(&hashes);
+    _ZND18PrePostDollarFixerEPKv(&hashes2);
+    _ZND23PrePostFloatDollarFixerEPKv(&hashes);
 }
 
 void runAsPrePostFixerRef(const PrePostFixer* const pp)
 {
     printf("\n--- start runAsPrePostFixerRef() ---\n\n");
 
-    ((funcPtr_pvoid_long_char)((((TextFormatter*)pp)->m_vptr)[_Z5printElc]))(pp, 123, '\0');
+    ((funcPtr_pvlcRv)((((TextFormatter*)pp)->m_vptr)[_Z5printElc]))(pp, 123, '\0');
 
     printf("\n--- end runAsPrePostFixerRef() ---\n\n");
 }
@@ -85,7 +85,7 @@ void runAsPrePostDollarFixerRef(const PrePostDollarFixer* const pp)
 {
     printf("\n--- start runAsPrePostDollarFixerRef() ---\n\n");
 
-    PrePostDollarFixer_print_i_c(pp, 123, PrePostDollarFixer_DEFAULT_SYMBOL);
+    _ZNK18PrePostDollarFixer5printEKPKsic(pp, 123, _ZN18PrePostDollarFixer14DEFAULT_SYMBOLE);
 
     printf("\n--- end runAsPrePostDollarFixerRef() ---\n\n");
 }
@@ -94,7 +94,7 @@ void runAsPrePostDollarFixerObj(const PrePostDollarFixer pp)
 {
     printf("\n--- start runAsPrePostDollarFixerObj() ---\n\n");
 
-    PrePostDollarFixer_print_i_c(&pp, 123, PrePostDollarFixer_DEFAULT_SYMBOL);
+    _ZNK18PrePostDollarFixer5printEKPKsic(&pp, 123, _ZN18PrePostDollarFixer14DEFAULT_SYMBOLE);
 
     printf("\n--- end runAsPrePostDollarFixerObj() ---\n\n");
 }
@@ -104,7 +104,7 @@ void runAsPrePostHashFixerRef(const PrePostHashFixer* const pp)
 {
     printf("\n--- start runAsPrePostHashFixerRef() ---\n\n");
 
-    PrePostHashFixer_print_i_c(pp, 123, PrePostHashFixer_DEFAULT_SYMBOL);
+    _ZNK16PrePostHashFixer5printEKPKsic(pp, 123, _ZN16PrePostHashFixer14DEFAULT_SYMBOLE);
 
     printf("\n--- end runAsPrePostHashFixerRef() ---\n\n");
 }
@@ -115,35 +115,35 @@ void doMultiplier()
     printf("\n--- start doMultiplier() ---\n\n");
 
     /*construct m1*/
-    DefaultTextFormatter_ctor(&(m1.m_DefaultTextFormatterBase));
+    _ZNC20DefaultTextFormatterEPKs(&(m1.m_DefaultTextFormatterBase));
     ((TextFormatter*)&m1)->m_vptr = MultiplierVTable;
     m1.m_times = 3;
     printf("--- Multiplier CTOR: times = %d\n", m1.m_times);
 
     /*construct m2*/
-    DefaultTextFormatter_ctor(&(m2.m_DefaultTextFormatterBase));
+    _ZNC20DefaultTextFormatterEPKs(&(m2.m_DefaultTextFormatterBase));
     ((TextFormatter*)&m2)->m_vptr = MultiplierVTable;
     m2.m_times = 5;
     printf("--- Multiplier CTOR: times = %d\n", m2.m_times);
 
     /*construct m3*/
-    Multiplier_copy_ctor(&m3, &m1);
+    _ZNC10Multiplier_dtorEPKsKPK10Multiplier(&m3, &m1);
 
     /*construct m4*/
-    Multiplier_copy_ctor(&m4, &m2);
+    _ZNC10Multiplier_dtorEPKsKPK10Multiplier(&m4, &m2);
 
-    Multiplier_print_cc(&m1, "abc ");
-    Multiplier_print_cc(&m2, "abc ");
-    Multiplier_print_cc(&m3, "abc ");
-    Multiplier_print_cc(&m4, "abc ");
+    _ZNK10Multiplier5printEKPKvKPc(&m1, "abc ");
+    _ZNK10Multiplier5printEKPKvKPc(&m2, "abc ");
+    _ZNK10Multiplier5printEKPKvKPc(&m3, "abc ");
+    _ZNK10Multiplier5printEKPKvKPc(&m4, "abc ");
 
 
     printf("\n--- start doMultiplier() ---\n\n");
 
-    Multiplier_dtor(&m4);
-    Multiplier_dtor(&m3);
-    Multiplier_dtor(&m2);
-    Multiplier_dtor(&m1);
+    _ZND10Multiplier_dtorEPKs(&m4);
+    _ZND10Multiplier_dtorEPKs(&m3);
+    _ZND10Multiplier_dtorEPKs(&m2);
+    _ZND10Multiplier_dtorEPKs(&m1);
 }
 
 void doFormatterArray()
@@ -156,20 +156,20 @@ void doFormatterArray()
 
     printf("\n--- start doFormatterArray() ---\n\n");
 
-    /*obj1*/PrePostDollarFixer_ctor_cc_cc(&tempObj1, "!!! ", " !!!");
-    DefaultTextFormatter_copy_ctor(&obj1, (DefaultTextFormatter*)&tempObj1);
-    PrePostDollarFixer_dtor(&tempObj1);
+    /*obj1*/_ZNC18PrePostDollarFixerEPKsKPcKPc(&tempObj1, "!!! ", " !!!");
+    _ZNC20DefaultTextFormatterEPKsKPKs(&obj1, (DefaultTextFormatter *) &tempObj1);
+    _ZND18PrePostDollarFixerEPKv(&tempObj1);
 
-    /*obj2*/DefaultTextFormatter_ctor(&(tempObj2.m_DefaultTextFormatterBase));
+    /*obj2*/_ZNC20DefaultTextFormatterEPKs(&(tempObj2.m_DefaultTextFormatterBase));
     ((TextFormatter*)&tempObj2)->m_vptr = MultiplierVTable;
     tempObj2.m_times = 4;
     printf("--- Multiplier CTOR: times = %d\n", tempObj2.m_times);
-    DefaultTextFormatter_copy_ctor(&obj2, (DefaultTextFormatter*)&tempObj2);
-    Multiplier_dtor(&tempObj2);
+    _ZNC20DefaultTextFormatterEPKsKPKs(&obj2, (DefaultTextFormatter *) &tempObj2);
+    _ZND10Multiplier_dtorEPKs(&tempObj2);
 
-    /*obj3*/PrePostChecker_ctor(&tempObj3);
-    DefaultTextFormatter_copy_ctor(&obj3, (DefaultTextFormatter*)&tempObj3);
-    PrePostChecker_dtor(&tempObj3);
+    /*obj3*/_ZNC14PrePostCheckerEPKs(&tempObj3);
+    _ZNC20DefaultTextFormatterEPKsKPKs(&obj3, (DefaultTextFormatter *) &tempObj3);
+    _ZND14PrePostCheckerEPKv(&tempObj3);
 
     formatters[0] = obj1;
     formatters[1] = obj2;
@@ -177,13 +177,13 @@ void doFormatterArray()
 
 
     for (i = 0; i < 3; ++i)
-        DefaultTextFormatter_print(&(formatters[i]), "Hello World!");
+        _ZN20DefaultTextFormatter5printEKPKvKPc(&(formatters[i]), "Hello World!");
 
     printf("\n--- end doFormatterArray() ---\n\n");
 
-    DefaultTextFormatter_dtor(&obj3);
-    DefaultTextFormatter_dtor(&obj2);
-    DefaultTextFormatter_dtor(&obj1);
+    _ZND20DefaultTextFormatterEPKv(&obj3);
+    _ZND20DefaultTextFormatterEPKv(&obj2);
+    _ZND20DefaultTextFormatterEPKv(&obj1);
 
 }
 
@@ -197,24 +197,24 @@ void doFormatterPtrs()
 
     printf("\n--- start doFormatterPtrs() ---\n\n");
 
-    /*obj1*/PrePostDollarFixer_ctor_cc_cc(obj1, "!!! ", " !!!");
+    /*obj1*/_ZNC18PrePostDollarFixerEPKsKPcKPc(obj1, "!!! ", " !!!");
 
-    /*obj2*/DefaultTextFormatter_ctor(&(obj2->m_DefaultTextFormatterBase));
+    /*obj2*/_ZNC20DefaultTextFormatterEPKs(&(obj2->m_DefaultTextFormatterBase));
     ((TextFormatter*)obj2)->m_vptr = MultiplierVTable;
     obj2->m_times = 4;
     printf("--- Multiplier CTOR: times = %d\n", obj2->m_times);
 
-    /*obj3*/PrePostChecker_ctor(obj3);
+    /*obj3*/_ZNC14PrePostCheckerEPKs(obj3);
 
     pfmt[0] = (DefaultTextFormatter*)obj1;
     pfmt[1] = (DefaultTextFormatter*)obj2;
     pfmt[2] = (DefaultTextFormatter*)obj3;
 
     for (i = 0; i < 3; ++i)
-        ((funcPtr_pvoid_pchar_R_void) ((((TextFormatter *) (pfmt[i]))->m_vptr)[_Z5printEKPc]))(pfmt[i], "Hello World!");
+        ((funcPtr_pvpRv) ((((TextFormatter *) (pfmt[i]))->m_vptr)[_Z5printEKPc]))(pfmt[i], "Hello World!");
 
     for (i = 2; i >= 0; --i){
-        ((funcPtr_void_R_void)((((TextFormatter*)(pfmt[i]))->m_vptr)[_Z4DtorEPKs]))(pfmt[i]);
+        ((funcPtr_pvRv)((((TextFormatter*)(pfmt[i]))->m_vptr)[_Z4DtorEPKs]))(pfmt[i]);
         free(pfmt[i]);
     }
 
@@ -231,10 +231,10 @@ void doFormatterDynamicArray()
     formatters = generateFormatterArray();
     
     for (i = 0; i < 3; ++i)
-        ((funcPtr_pvoid_pchar_R_void) ((((TextFormatter *) (&(formatters[i])))->m_vptr)[_Z5printEKPc]))(&(formatters[i]), "Hello World!");
+        ((funcPtr_pvpRv) ((((TextFormatter *) (&(formatters[i])))->m_vptr)[_Z5printEKPc]))(&(formatters[i]), "Hello World!");
 
     for (i = 2; i >= 0; --i){
-        DefaultTextFormatter_dtor(&(formatters[i]));
+        _ZND20DefaultTextFormatterEPKv(&(formatters[i]));
     }
     free(formatters);
 
@@ -253,13 +253,13 @@ int main()
     doPrePostFloatDollarFixer();
     doPrePostChecker();
 
-    PrePostHashFixer_ctor(&hfix, 4);
+    _ZNC16PrePostHashFixerEPKsi(&hfix, 4);
     runAsPrePostFixerRef((PrePostFixer*)&hfix);
     runAsPrePostDollarFixerRef((PrePostDollarFixer*)&hfix);
 
-    PrePostDollarFixer_copy_ctor(&temp, (PrePostDollarFixer*)&hfix);
+    _ZNC18PrePostDollarFixerEPKsKPK18PrePostDollarFixer(&temp, (PrePostDollarFixer *) &hfix);
     runAsPrePostDollarFixerObj(temp);
-    PrePostDollarFixer_dtor(&temp);
+    _ZND18PrePostDollarFixerEPKv(&temp);
 
     runAsPrePostHashFixerRef((PrePostHashFixer*)&hfix);
 
@@ -270,7 +270,7 @@ int main()
     doFormatterDynamicArray();
 
     printf("\n--- End main() ---\n\n");
-    PrePostHashFixer_dtor(&hfix);
+    _ZND16PrePostHashFixerEPKv(&hfix);
     return 0;
 }
 
